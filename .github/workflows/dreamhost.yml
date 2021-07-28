@@ -18,7 +18,7 @@ jobs:
         working-directory: ./interactive
         run: npm run build
       - name: Production Sync
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}

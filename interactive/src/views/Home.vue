@@ -20,31 +20,34 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
-import PostCard from '@/components/PostCard.vue'
+import { PostsState } from '~/store/posts'
+
+const pageCount = 5
 
 export default Vue.extend({
-  components: { PostCard },
   computed: {
     posts() {
-      return [
-        {
-          title: 'test post',
-          slug: 'test-post',
-          content: '<p>this is a test post</p>',
-          excerpt: '<p>this is a test post</p>'
-        },
-      ]
+      return (this.$store.state.posts as PostsState).nodes
     },
     pageInfo() {
-      return {
-        endCursor: '',
-        hasNextPage: false,
-        hasPreviousPage: false,
-        startCursor: '',
-      }
-    }
-  }
+      return (this.$store.state.posts as PostsState).pageInfo
+    },
+  },
+  watch: {
+    async $route() {
+      await this.$nuxt.refresh()
+      window.scrollTo(0, 0)
+    },
+  },
+  async asyncData({ store, query }) {
+    await store.dispatch('posts/getPosts', {
+      after: query.after,
+      before: query.before,
+      first: query.before ? undefined : pageCount,
+      last: query.before ? pageCount : undefined,
+    })
+  },
 })
 </script>

@@ -10,16 +10,15 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
-    computed: {
-        post() {
-            return {
-                title: 'test post',
-                slug: 'test-post',
-                content: '<p>this is a test post</p>',
-                excerpt: '<p>this is a test post</p>'
-            }
-        }
-    }
+  computed: {
+    post() {
+      return this.$store.state.posts.post
+    },
+  },
+  async asyncData({ store, params }) {
+    await store.dispatch('posts/getPost', params.slug)
+  },
 })
 </script>

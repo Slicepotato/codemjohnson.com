@@ -1,24 +1,29 @@
+name: Deploy to Dreamhost Production
+
 on:
   push:
-    branches: [production]
+    branches: 
+      - production
 
-name: deploy to dreamhost
 jobs:
-  dev-deploy:
-    name: Deploy
+  prod-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Get Latest
-      uses: actions/checkout@v2.3.2
-      
-    - name: Test Env Sync
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./interactive/dist/
-        server-dir: ${{ secrets.FTP_SERVER }}/
-        protocol: ftps
-        security: strict
-        port: 21
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+      - name: Installing project dependencies
+        working-directory: ./interactive
+        run: npm install
+      - name: Building the project
+        run: npm run build
+      - name: Production Sync
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./interactive/dist/
+          server-dir: ${{ secrets.FTP_SERVER }}/
+          protocol: ftps
+          security: strict
+          port: 21

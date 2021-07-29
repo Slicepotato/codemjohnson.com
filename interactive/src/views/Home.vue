@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home page-wrap">
    <div v-for="item in page" :key="item">
      <h1>{{ item.title.rendered }}</h1>
      <div class="page-content" v-html="item.content.rendered"></div>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
   data () {
@@ -37,3 +36,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+</style>

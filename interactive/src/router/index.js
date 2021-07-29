@@ -9,10 +9,6 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
-    props: {
-      default: true,
-      slug: 'home'
-    }
   },
 ]
 

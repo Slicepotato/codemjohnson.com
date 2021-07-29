@@ -1,0 +1,23 @@
+html, body {
+    width: 100%;
+	font-family: $roboto;
+    font-weight: 300;
+    margin: 0;
+}
+
+.page-wrap {
+    padding: 0 1rem 2rem;
+    max-width: $lg;
+    margin: 0 auto;
+    height: calc(100vh - 289px);
+
+    @include at-least($sm) {
+        height: calc(100vh - 114px);
+    }
+}
+
+.content-wrap {
+    padding: 1rem;
+    max-width: $lg;
+    margin: 0 auto;
+}

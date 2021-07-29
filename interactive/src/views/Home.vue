@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home page-wrap">
    <div v-for="item in page" :key="item">
      <h1>{{ item.title.rendered }}</h1>
      <div class="page-content" v-html="item.content.rendered"></div>
@@ -8,7 +8,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
   data () {
@@ -25,7 +24,7 @@ export default {
       for(let item in response.data){
         this.page.push(response.data[item]);
       }
-      console.log(response);
+      // console.log(response);
     }, error => { 
       alert(error) 
     });
@@ -34,6 +33,10 @@ export default {
     currentRouteName() {
         return this.$route.name;
     }
-}
+  }
 }
 </script>
+
+<style lang="scss">
+
+</style>

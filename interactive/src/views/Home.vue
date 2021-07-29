@@ -25,7 +25,7 @@ export default {
       for(let item in response.data){
         this.page.push(response.data[item]);
       }
-      console.log(response);
+      // console.log(response);
     }, error => { 
       alert(error) 
     });

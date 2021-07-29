@@ -34,6 +34,6 @@ export default {
     currentRouteName() {
         return this.$route.name;
     }
-}
+  }
 }
 </script>

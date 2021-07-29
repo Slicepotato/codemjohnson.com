@@ -17,7 +17,7 @@ Vue.component('fa', FontAwesomeIcon)
 
 Vue.use(VueResource);
 
-Vue.http.options.root = 'http://wp.codemjohnson.com/wp-json';
+Vue.http.options.root = 'https://wp.codemjohnson.com/wp-json';
 
 Vue.config.productionTip = false
 

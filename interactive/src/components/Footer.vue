@@ -2,7 +2,7 @@
     <footer>
         <div class="content-wrap">
             <div id="signature">
-				<h3>Michael Johnson</h3>
+				<h3>{{ user }}</h3>
 			</div>
 			<div class="footerMeta">
                 <ul>
@@ -22,11 +22,14 @@
 export default {
     name: 'Footer',
     data () {
+        let user;
+        
         return {
-        slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
-        stuff: [],
-        contact: [],
-        menuTitle: []
+            slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
+            stuff: [],
+            contact: [],
+            menuTitle: [],
+            user
         }
     },
     components: {
@@ -56,6 +59,14 @@ export default {
                 this.contact.push(response.data[item]);
             }
             // console.log(response);
+        }, error => { 
+            alert(error) 
+        });
+
+        this.$http.get('wp/v2/users/1').then(response => {
+            let userObj = response.data;
+            this.user = userObj.name;
+            // console.log(userObj);
         }, error => { 
             alert(error) 
         });

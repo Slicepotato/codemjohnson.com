@@ -5,11 +5,19 @@ html, body {
     margin: 0;
 }
 
+h1 {
+    font-size: 3rem;
+}
+h2 {
+    font-size: 2rem;
+}
+
 .page-wrap {
-    padding: 0 1rem 2rem;
+    padding: .5rem 1rem 2rem;
     max-width: $lg;
     margin: 0 auto;
     height: calc(100vh - 289px);
+    border-top: 10px solid $off-blk;
 
     @include at-least($sm) {
         height: calc(100vh - 114px);
@@ -20,4 +28,14 @@ html, body {
     padding: 1rem;
     max-width: $lg;
     margin: 0 auto;
+}
+
+.stat-title {
+    font-family: $alegreya;
+    font-weight: 700;
+    color: $title-red;
+
+    &--sm {
+        font-weight: 400;
+    }
 }

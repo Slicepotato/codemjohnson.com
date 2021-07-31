@@ -1,6 +1,7 @@
 <template>
-  <div id="app">
-    <div v-for="item in img" :key="item" :style="{ 'background-image':''}">
+  <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
+    <app-header></app-header>
+    <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
       <router-view/>
     </div>
     <app-footer></app-footer>
@@ -8,27 +9,43 @@
 </template>
 
 <script>
-// url(${item.source_url})
+import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+
+let pageBg;
+let footerBg;
 
 export default {
   data () {
     return {
-      slug: 'parchment',
-      img: []
+      footerBgSlug: 'footer-bg-codemj',
+      pageBgSlug: 'background-texture',
+      footerBg,
+      pageBg,
+      img: [],
     }
   },
   components: {
     appFooter: Footer,
+    appHeader: Header,
   },
   created: function() {
-    this.$http.get('wp/v2/media?slug=' + this.slug).then(response => {
-      for(let item in response.data){
-        this.img.push(response.data[item]);
-      }
-      console.log(response);
+    // Fetch | Media -- Footer
+    this.$http.get('wp/v2/media/?slug=' + this.footerBgSlug).then(response => {
+        for(let media in response.data){
+            this.footerBg = response.data[media].source_url;    
+        } 
     }, error => { 
-      alert(error) 
+        alert(error) 
+    });
+
+    // Fetch | Media -- Page BG
+    this.$http.get('wp/v2/media/?slug=' + this.pageBgSlug).then(response => {
+        for(let media in response.data){
+            this.pageBg = response.data[media].source_url;    
+        } 
+    }, error => { 
+        alert(error) 
     });
   },
 }

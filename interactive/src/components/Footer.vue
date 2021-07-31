@@ -1,21 +1,21 @@
 <template>
     <footer>
-        <div class="content-wrap flex flex--justify-between flex--align-items-start flex--column">
+        <div class="content-wrap flex flex--justify-between flex--align-items-start">
             <div id="signature">
-				<h3>{{ user }}</h3>
+				<h3>{{ userData.name }}</h3>
 			</div>
 			<div class="footerMeta flex flex--justify-between flex--align-items-start flex--column">
-                <ul class="flex flex--justify-between flex--align-items-start flex--column">
-                    <li v-for="menu in stuffTitle" :key="menu"><h3>{{ menu.name }}</h3></li>
-                    <li v-for="item in stuff" :key="item">
+                <ul class="flex flex--justify-start flex--align-items-start flex--column">
+                    <li><h3>{{ menuTitles[1].name }}</h3></li>
+                    <li v-for="item in menuStuff" :key="item">
                         <h3>
                             <a :href="item.url" :target="item.target">{{ item.title }}</a>
                         </h3>
                     </li>
                 </ul>
-				<ul class="flex flex--justify-between flex--align-items-start flex--column">
-					<li v-for="menu in contactTitle" :key="menu"><h3>{{ menu.name }}</h3></li>
-					<li v-for="item in contact" :key="item">
+				<ul class="flex flex--justify-start flex--align-items-start flex--column">
+					<li><h3>{{ menuTitles[0].name }}</h3></li>
+					<li v-for="item in menuContact" :key="item">
                         <h3>
                             <a :href="item.url" :target="item.target">{{ item.title }}</a>
                         </h3>
@@ -29,79 +29,77 @@
 <script>    
 export default {
     name: 'Footer',
-    data () {
-        let user;
-        
+    data () {     
         return {
             slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
-            stuff: [],
-            contact: [],
-            menuTitle: [],
-            user
+            userData: [],
+            menuTitles: [],
+            menuContact: [],
+            menuStuff: [],
         }
     },
     components: {
         
     },
     created: function() {
+        // Fetch | Menu Collection
         this.$http.get('wp/v2/menu/').then(response => {
-            for(let item in response.data){
-                this.menuTitle.push(response.data[item]);
-            }
-            console.log(response);
+            for(let title in response.data){
+                this.menuTitles.push(response.data[title]);
+            }        
         }, error => { 
             alert(error) 
         });
 
+        // Fetch | Stuff I did Menu
         this.$http.get('wp/v2/menu/2').then(response => {
-            for(let item in response.data){
-                this.stuff.push(response.data[item]);
-            }
-            // console.log(response);
+            for(let stuff in response.data){
+                this.menuStuff.push(response.data[stuff]);
+            }        
         }, error => { 
             alert(error) 
         });
 
+        // Fetch | Contact Menu
         this.$http.get('wp/v2/menu/3').then(response => {
-            for(let item in response.data){
-                this.contact.push(response.data[item]);
-            }
-            // console.log(response);
+            for(let contact in response.data){
+                this.menuContact.push(response.data[contact]);
+            }        
         }, error => { 
             alert(error) 
         });
 
+        // Fetch | User => Me
         this.$http.get('wp/v2/users/1').then(response => {
-            let userObj = response.data;
-            this.user = userObj.name;
-            // console.log(userObj);
+            this.userData = response.data;
         }, error => { 
             alert(error) 
         });
     },
+    mounted() {
+        
+    },
     computed: {
         currentRouteName() {
             return this.$route.name;
-        },
-        stuffTitle: function () {
-            return this.menuTitle.filter(i => i.term_id === 2)
-        },
-        contactTitle: function () {
-            return this.menuTitle.filter(i => i.term_id === 3)
+        },        
+    },
+    methods: {
+        getMenuTitle(menuId) {
+            let menuName = this.menuTitles.find(i => i.term_id === menuId);
+            return menuName.name;
         },
     }
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     @import '@/assets/scss/utility/_variables.scss';
     @import '@/assets/scss/utility/_mixins.scss';
 
     footer {
-        background-color: $off-blk;
-        position: absolute;
-        bottom: 0;
         width: 100%;
+        background-color: $off-blk;
 
         h3 {
             font-family: $roboto-slab;
@@ -124,8 +122,20 @@ export default {
             }
         }
 
+        .content-wrap {
+            @include flex-direction(column);
+
+            @include at-least($md) {
+                @include flex-direction(row);
+            }
+        }
+
         .footerMeta {
+            @include flex-wrap(wrap);
+
             ul {
+                @include flex-wrap(wrap);
+
                 &:first-of-type {
                     margin-right: 3rem;
                     padding-bottom: 1rem
@@ -133,17 +143,13 @@ export default {
             }
 
             @include at-least($xs) {
-                ul {
-                    &:first-of-type {
-                        padding: 0;
-                    }
-                }
-            }
-            @include at-least($sm) {
                 @include flex-direction(row);
 
                 ul {
                     @include flex-direction(row);
+                    &:first-of-type {
+                        padding: 0;
+                    }
                 }
             }
         }

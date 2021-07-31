@@ -1,11 +1,11 @@
 <template>
     <footer>
-        <div class="content-wrap flex flex--justify-between flex--align-items-start flex--column">
+        <div class="content-wrap flex flex--justify-between flex--align-items-start">
             <div id="signature">
 				<h3>{{ userData.name }}</h3>
 			</div>
 			<div class="footerMeta flex flex--justify-between flex--align-items-start flex--column">
-                <ul class="flex flex--justify-between flex--align-items-start flex--column">
+                <ul class="flex flex--justify-start flex--align-items-start flex--column">
                     <li><h3>{{ menuTitles[1].name }}</h3></li>
                     <li v-for="item in menuStuff" :key="item">
                         <h3>
@@ -13,7 +13,7 @@
                         </h3>
                     </li>
                 </ul>
-				<ul class="flex flex--justify-between flex--align-items-start flex--column">
+				<ul class="flex flex--justify-start flex--align-items-start flex--column">
 					<li><h3>{{ menuTitles[0].name }}</h3></li>
 					<li v-for="item in menuContact" :key="item">
                         <h3>
@@ -93,15 +93,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     @import '@/assets/scss/utility/_variables.scss';
     @import '@/assets/scss/utility/_mixins.scss';
 
     footer {
-        background-color: $off-blk;
-        position: absolute;
-        bottom: 0;
         width: 100%;
+        background-color: $off-blk;
 
         h3 {
             font-family: $roboto-slab;
@@ -124,8 +122,20 @@ export default {
             }
         }
 
+        .content-wrap {
+            @include flex-direction(column);
+
+            @include at-least($md) {
+                @include flex-direction(row);
+            }
+        }
+
         .footerMeta {
+            @include flex-wrap(wrap);
+
             ul {
+                @include flex-wrap(wrap);
+
                 &:first-of-type {
                     margin-right: 3rem;
                     padding-bottom: 1rem
@@ -133,17 +143,13 @@ export default {
             }
 
             @include at-least($xs) {
-                ul {
-                    &:first-of-type {
-                        padding: 0;
-                    }
-                }
-            }
-            @include at-least($sm) {
                 @include flex-direction(row);
 
                 ul {
                     @include flex-direction(row);
+                    &:first-of-type {
+                        padding: 0;
+                    }
                 }
             }
         }

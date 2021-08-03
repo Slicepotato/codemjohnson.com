@@ -3,7 +3,7 @@
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <img class="avatar" :src="token">
-                <span>{{ user }}</span>
+                <span>{{  }}</span>
             </h1>
         </div>
     </header>

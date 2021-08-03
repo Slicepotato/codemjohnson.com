@@ -3,10 +3,13 @@
     <template v-for="item in page">
       <div class="page-content" :key="item" v-html="item.content.rendered"></div>
     </template>
+    <Experience/>
   </div>
 </template>
 
 <script>
+import Experience from '@/components/Experience.vue';
+
 export default {
   name: 'Home',
   data () {
@@ -16,7 +19,7 @@ export default {
     }
   },
   components: {
-    
+    Experience
   },
   created: function() {
     // Fetch | Page Data

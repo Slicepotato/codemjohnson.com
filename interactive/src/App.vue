@@ -1,10 +1,10 @@
 <template>
   <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
-    <app-header></app-header>
+    <Header/>
     <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
       <router-view/>
     </div>
-    <app-footer></app-footer>
+    <Footer/>
   </div>
 </template>
 
@@ -26,8 +26,8 @@ export default {
     }
   },
   components: {
-    appFooter: Footer,
-    appHeader: Header,
+    Footer,
+    Header,
   },
   created: function() {
     // Fetch | Media -- Footer

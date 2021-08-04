@@ -3,24 +3,29 @@
         <slick ref="slick" :options="slickOptions"  v-if="jobsInfo.length > 0">
             <template v-for="job in jobsInfo">
                 <div class="card" :key="job">
-                  {{ job.acf.start_date }}
-                  <a v-if="job.acf.company_url" :href="job.acf.company_url">
-                    <h4 class="employer">{{ job.title.rendered }}</h4>
-                  </a>
-                  <h4 class="employer" v-else>{{ job.title.rendered}}</h4>
-                  <p class="job-title">{{ job.acf.job_title }}</p>
-                  <p class="job-excerpt" v-html="job.excerpt.rendered"></p>
-                  <template v-if="job.tagList.length">
-                    <h5>Skills</h5>
-                    <ul v-for="tag in job.tagList" :key="tag">
-                      <li>
-                        <span>{{ tag.name }}</span>
-                      </li>
-                    </ul>
-                  </template>
-                  <template v-else>
-                    <p>nope</p>
-                  </template>
+                  <div class="inner">
+                    <h3 class="job-timeline">{{ job.acf.start_date }} - {{ job.acf.end_date }}</h3>
+                    <h4 class="employer">
+                      <template v-if="job.acf.company_url">
+                        <a :href="job.acf.company_url"><span>{{ job.title.rendered}}</span></a>
+                      </template>
+                      <template v-else>
+                        <span>{{ job.title.rendered}}</span>
+                      </template>
+                    </h4>
+                    <p class="job-title">{{ job.acf.job_title }}</p>
+                    <p class="job-excerpt" v-html="job.excerpt.rendered"></p>
+                    <template v-if="job.tagList.length">
+                      <div class="skills-list">
+                        <h5>Skills</h5>
+                        <ul class="flex flex--justify-start flex--align-center flex--wrap">
+                          <li v-for="tag in job.tagList" :key="tag">
+                            <span>{{ tag.name }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </template>
+                    </div>
                 </div>
             </template>
         </slick>
@@ -116,5 +121,78 @@ export default {
 </script>
 
 <style lang="scss">
+  @import '@/assets/scss/utility/_variables.scss';
+  @import '@/assets/scss/utility/_mixins.scss';
 
+  .slick-track {
+    @include flexbox;
+
+    .slick-slide {
+      height: inherit;
+
+      > div {
+        height: 100%;
+      }
+    }
+  }
+
+  .card {
+    height: inherit;
+
+    .inner {
+      background-color: $grey-8;
+      padding: 1rem;
+      border: 2px solid $grey-4;
+      height: 100%;
+    }
+
+    .job-timeline {
+      font-size: .75rem;
+      font-family: $roboto-mono;
+    }
+
+    .employer {
+      font-family: $roboto-slab;
+      font-weight: 500;
+      font-size: 1.5rem;
+
+      a {
+        text-decoration: none;
+      }
+    }
+
+    .job-title {
+      font-style: italic;
+      font-size: .875rem;
+      border-bottom: 2px solid $grey-4;
+      padding-bottom: .25rem;
+      margin-bottom: .5rem;
+    }
+
+    .job-excerpt {
+      margin-bottom: 1rem;
+    }
+
+    .skills-list {
+      h5 {
+        font-family: $roboto-slab;
+        font-weight: 500;
+        border-bottom: 1px solid $accent-orange;
+        margin-bottom: .5rem;
+      }
+
+      ul {
+        li {
+          span {
+            font-size: .625rem;
+            background-color: $grey-7;
+            padding: .25rem;
+            border-radius: 5px;
+            margin: 0 .5rem .25rem 0;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
 </style>

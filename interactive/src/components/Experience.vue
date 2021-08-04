@@ -1,7 +1,8 @@
 <template>
     <div class="slick-wrap">
-        <slick ref="slick" :options="slickOptions"  v-if="positionMeta.length > 0">
-            <template v-for="job in positionMeta">
+        {{ jobsInfo }}
+        <slick ref="slick" :options="slickOptions"  v-if="jobsInfo.length > 0">
+            <template v-for="job in jobsInfo">
                 <div class="card" :key="job">
                   {{ job.acf.start_date }}
                   <a v-if="job.acf.company_url" :href="job.acf.company_url">
@@ -10,6 +11,10 @@
                   <h4 class="employer" v-else>{{ job.title.rendered}}</h4>
                   <p class="job-title">{{ job.acf.job_title }}</p>
                   <p class="job-excerpt" v-html="job.excerpt.rendered"></p>
+                  {{ job.tagList }}
+                  <ul v-for="tag in job.tagList" :key="tag">
+                    <li>blah blah blah</li>
+                  </ul>
                 </div>
             </template>
         </slick>
@@ -37,50 +42,12 @@ export default {
                 swipe: true
                 // Any other options that can be got from plugin documentation
             },
-            positionId: [],
-            positionMeta: [],
-            tagId: [],
-            tags: []
+            jobsInfo: [],
         };
     },
     created: function() {
-    // Fetch | Employment Post Ids
-    this.$http.get('wp/v2/employment').then(response => {
-      // get - List of employment posts
-      for(let post in response.data){
-        // get - Singular Post
-        for(let tag in response.data[post].tags){
-          // get - post tag array
-          let tagName = this.fetchTags(response.data[post].tags[tag]);
-          let theseTags = tagName.find(x => x.id == response.data[post].tags[tag]);
-           theseTags.then(function(result) {
-              let map = response.data[post].tags.map(tagId => {
-                const tagObj = {}
-                tagObj.id = tagId,
-                tagObj.name = result
-
-                return tagObj;
-              });
-
-              let tagList = map.map(x => {
-                response.data[post].tagList = x;
-
-                return x;
-              });
-              this.positionMeta.push(tagList);
-           });
-        }
-        console.log(this.positionMeta);
-      }
-    }, error => { 
-      alert(error) 
-    });
-
-    // Fetch | Use Employment IDs to gather Employmrnt posts with ACF
-    
-    // Fetch | Use Tag IDs to gather Tag details
-    
-  },
+      this.init();    
+    },
   methods: {
     next() {
       this.$refs.slick.next()
@@ -94,19 +61,30 @@ export default {
             this.$refs.slick.reSlick();
         });
     },
-    fetchEmployment(jobId) {
-      this.$http.get('wp/v2/employment/' + jobId).then(response => {    
-        for(let item in response.data.tags){
-          let tagName = this.fetchTags(response.data.tags[item]);
-          response.data['tagList'] = tagName;
+    init: function(){
+			this.fetchEmployment();
+		},
+    fetchEmployment() {
+      this.$http.get('wp/v2/employment').then((response) => {    
+        this.jobsInfo = response.data;
+        
+        for(let job in response.data){
+          this.jobsInfo[job]['tagList'] = []
+          for(let tagIds in response.data[job].acf.skills_list){
+            this.fetchTags(response.data[job].acf.skills_list[tagIds]).then(function(result){
+              this.jobsInfo[job]['tagList'].push({'name':result.name});
+            });
+          }
         }
+
+        console.log(this.jobsInfo);
       }, error => { 
         alert(error) 
       });
     },
     fetchTags(tagList) {
-      return this.$http.get('wp/v2/tags/' + tagList).then(response => {
-        return Promise.resolve(response.data.name);
+      return this.$http.get('wp/v2/tags/' + tagList).then((response) => {
+        return response.data;
       }, error => { 
         alert(error) 
       });

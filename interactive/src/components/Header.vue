@@ -22,20 +22,31 @@ export default {
         }
     },
     created: function() {
-        // Fetch | My User Full Nane
-        this.$http.get('wp/v2/users/1').then(response => {
-            let userObj = response.data;
-            this.user = userObj.name;
-        }, error => { 
-            alert(error) 
-        });
-
-        // Fetch | Media -- me-token
-        this.$http.get('wp/v2/media/42').then(response => {
-            this.token = response.data.source_url;   
-        }, error => { 
-            alert(error) 
-        });
+        this.init();          
+    },
+    methods: {
+        init: function() {
+            this.sayMyName(1).then(function(result){
+                this.user = result;
+            });
+            this.fetchAvatar(42).then(function(result){
+                this.token = result;
+            });
+        },
+        sayMyName(uid){
+            return this.$http.get('wp/v2/users/' + uid).then((response) => {
+                return response.data.name;
+            }, error => { 
+                alert(error) 
+            });
+        },
+        fetchAvatar(id){
+            return this.$http.get('wp/v2/media/' + id).then((response) => {
+                return response.data.source_url; 
+            }, error => { 
+                alert(error) 
+            });
+        }
     }
 }
 </script>

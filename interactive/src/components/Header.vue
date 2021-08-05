@@ -3,9 +3,9 @@
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <img class="avatar" :src="token">
-                <div class="user-meta">
-                    <p class="say-my-name">{{ user.name }}</p>
-                    <p class="title">{{ user.description }}</p>
+                <div class="user-meta" v-for="(my, index) in user" :key="index">
+                    <p class="say-my-name">{{ my.name }}</p>
+                    <p class="title">{{ my.description }}</p>
                 </div>
             </h1>
         </div>
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-let user;
 let token;
 
 export default {
@@ -21,7 +20,7 @@ export default {
     data() {
         return {
             token,
-            user
+            user: []
         }
     },
     created: function() {
@@ -30,7 +29,7 @@ export default {
     methods: {
         init: function() {
             this.userData(1).then(function(result){
-                this.user = result;
+                this.user.push(result);
             });
             this.fetchAvatar(42).then(function(result){
                 this.token = result;

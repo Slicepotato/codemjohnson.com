@@ -3,7 +3,10 @@
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <img class="avatar" :src="token">
-                <span>{{ user }}</span>
+                <div class="user-meta">
+                    <p class="say-my-name">{{ user.name }}</p>
+                    <p class="title">{{ user.description }}</p>
+                </div>
             </h1>
         </div>
     </header>
@@ -22,20 +25,31 @@ export default {
         }
     },
     created: function() {
-        // Fetch | My User Full Nane
-        this.$http.get('wp/v2/users/1').then(response => {
-            let userObj = response.data;
-            this.user = userObj.name;
-        }, error => { 
-            alert(error) 
-        });
-
-        // Fetch | Media -- me-token
-        this.$http.get('wp/v2/media/42').then(response => {
-            this.token = response.data.source_url;   
-        }, error => { 
-            alert(error) 
-        });
+        this.init();          
+    },
+    methods: {
+        init: function() {
+            this.userData(1).then(function(result){
+                this.user = result;
+            });
+            this.fetchAvatar(42).then(function(result){
+                this.token = result;
+            });
+        },
+        userData(uid){
+            return this.$http.get('wp/v2/users/' + uid).then((response) => {
+                return response.data;
+            }, error => { 
+                alert(error) 
+            });
+        },
+        fetchAvatar(id){
+            return this.$http.get('wp/v2/media/' + id).then((response) => {
+                return response.data.source_url; 
+            }, error => { 
+                alert(error) 
+            });
+        }
     }
 }
 </script>
@@ -52,6 +66,15 @@ export default {
             .avatar {
                 width: 4rem;
                 margin-right: 1rem;
+            }
+
+            .user-meta {
+                .title {
+                    font-size: 1rem;
+                    font-family: $roboto-slab;
+                    color: $grey-4;
+                    font-weight: 500;;
+                }
             }
         }
     }

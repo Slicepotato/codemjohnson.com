@@ -1,12 +1,13 @@
 <template>
   <div class="home content-wrap">
-    <template v-for="item in page">
-      <div class="page-content" :key="item" v-html="item.content.rendered"></div>
-    </template>
+    <div class="page-content" v-html="item.content.rendered" v-for="(item, index) in page" :key="index"></div>
+    <Experience/>
   </div>
 </template>
 
 <script>
+import Experience from '@/components/Experience.vue';
+
 export default {
   name: 'Home',
   data () {
@@ -16,7 +17,7 @@ export default {
     }
   },
   components: {
-    
+    Experience
   },
   created: function() {
     // Fetch | Page Data

@@ -2,22 +2,22 @@
     <footer>
         <div class="content-wrap flex flex--justify-between flex--align-items-start">
             <div id="signature">
-				<h3>{{ userData.name }}</h3>
+				<h3>{{ user }}</h3>
 			</div>
 			<div class="footerMeta flex flex--justify-between flex--align-items-start flex--column">
                 <ul class="flex flex--justify-start flex--align-items-start flex--column">
-                    <li><h3>{{ menuTitles[1].name }}</h3></li>
-                    <li v-for="item in menuStuff" :key="item">
+                    <li><h3>{{ menuStuff.name }}</h3></li>
+                    <li v-for="(stuff, index) in menuStuff.menu" :key="index">
                         <h3>
-                            <a :href="item.url" :target="item.target">{{ item.title }}</a>
+                            <a :href="stuff.url" :target="stuff.target">{{ stuff.title }}</a>
                         </h3>
                     </li>
                 </ul>
 				<ul class="flex flex--justify-start flex--align-items-start flex--column">
-					<li><h3>{{ menuTitles[0].name }}</h3></li>
-					<li v-for="item in menuContact" :key="item">
+					<li><h3>{{ menuContact.name }}</h3></li>
+					<li v-for="(contact,index) in menuContact.menu" :key="index">
                         <h3>
-                            <a :href="item.url" :target="item.target">{{ item.title }}</a>
+                            <a :href="contact.url" :target="contact.target">{{ contact.title }}</a>
                         </h3>
                     </li>
 				</ul>
@@ -27,13 +27,14 @@
 </template>
 
 <script>    
+let user;
+
 export default {
     name: 'Footer',
     data () {     
         return {
             slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
-            userData: [],
-            menuTitles: [],
+            user,
             menuContact: [],
             menuStuff: [],
         }
@@ -42,39 +43,7 @@ export default {
         
     },
     created: function() {
-        // Fetch | Menu Collection
-        this.$http.get('wp/v2/menu/').then(response => {
-            for(let title in response.data){
-                this.menuTitles.push(response.data[title]);
-            }        
-        }, error => { 
-            alert(error) 
-        });
-
-        // Fetch | Stuff I did Menu
-        this.$http.get('wp/v2/menu/2').then(response => {
-            for(let stuff in response.data){
-                this.menuStuff.push(response.data[stuff]);
-            }        
-        }, error => { 
-            alert(error) 
-        });
-
-        // Fetch | Contact Menu
-        this.$http.get('wp/v2/menu/3').then(response => {
-            for(let contact in response.data){
-                this.menuContact.push(response.data[contact]);
-            }        
-        }, error => { 
-            alert(error) 
-        });
-
-        // Fetch | User => Me
-        this.$http.get('wp/v2/users/1').then(response => {
-            this.userData = response.data;
-        }, error => { 
-            alert(error) 
-        });
+        this.init();          
     },
     mounted() {
         
@@ -85,9 +54,52 @@ export default {
         },        
     },
     methods: {
-        getMenuTitle(menuId) {
-            let menuName = this.menuTitles.find(i => i.term_id === menuId);
-            return menuName.name;
+        init: function(){
+            this.getStuffIDid(2).then(function(menu){
+                this.getMenuTitles().then(function(title){
+                    let menuName = title.find(i => i.term_id === 2);
+                    this.menuStuff['name'] = menuName.name;
+                });
+                this.menuStuff['menu'] = menu;
+            });
+            this.getContactInfo(3).then(function(menu){
+                this.getMenuTitles().then(function(title){
+                    let menuName = title.find(i => i.term_id === 3);
+                    this.menuContact['name'] = menuName.name;
+                });
+                this.menuContact['menu'] = menu;
+            });
+            this.sayMyName(1).then(function(result){
+                this.user = result;
+            });
+        },
+        getMenuTitles() {
+            return this.$http.get('wp/v2/menu').then(response => {
+                return response.data;       
+            }, error => { 
+                alert(error) 
+            });
+        },
+        getStuffIDid(id){
+            return this.$http.get('wp/v2/menu/' + id).then(response => {
+                return response.data;       
+            }, error => { 
+                alert(error) 
+            });
+        },
+        getContactInfo(id){
+            return this.$http.get('wp/v2/menu/' + id).then(response => {
+                return response.data;        
+            }, error => { 
+                alert(error) 
+            }); 
+        },
+        sayMyName(uid){
+            return this.$http.get('wp/v2/users/' + uid).then((response) => {
+                return response.data.name;
+            }, error => { 
+                alert(error) 
+            });
         },
     }
 }

@@ -1,10 +1,10 @@
 <template>
   <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
-    <app-header></app-header>
+    <Header/>
     <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
       <router-view/>
     </div>
-    <app-footer></app-footer>
+    <Footer/>
   </div>
 </template>
 
@@ -18,36 +18,36 @@ let footerBg;
 export default {
   data () {
     return {
-      footerBgSlug: 'footer-bg-codemj',
-      pageBgSlug: 'background-texture',
       footerBg,
-      pageBg,
-      img: [],
+      pageBg
     }
   },
   components: {
-    appFooter: Footer,
-    appHeader: Header,
+    Footer,
+    Header,
   },
   created: function() {
-    // Fetch | Media -- Footer
-    this.$http.get('wp/v2/media/?slug=' + this.footerBgSlug).then(response => {
-        for(let media in response.data){
-            this.footerBg = response.data[media].source_url;    
-        } 
-    }, error => { 
-        alert(error) 
-    });
-
-    // Fetch | Media -- Page BG
-    this.$http.get('wp/v2/media/?slug=' + this.pageBgSlug).then(response => {
-        for(let media in response.data){
-            this.pageBg = response.data[media].source_url;    
-        } 
-    }, error => { 
-        alert(error) 
-    });
-  },
+    this.init();    
+  }, 
+  methods: {
+    init: function(){
+			this.fetchMedia('footer-bg-codemj').then(function(result){
+        this.footerBg = result
+      });
+      this.fetchMedia('background-texture').then(function(result){
+        this.pageBg = result;
+      });
+		},
+    fetchMedia(slug){
+      return this.$http.get('wp/v2/media/?slug=' + slug).then((response) => {
+          for(let media in response.data){
+              return response.data[media].source_url;    
+          } 
+      }, error => { 
+          alert(error) 
+      });
+    }
+  }
 }
 </script>
 

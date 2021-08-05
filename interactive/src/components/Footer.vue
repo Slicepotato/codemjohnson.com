@@ -7,7 +7,7 @@
 			<div class="footerMeta flex flex--justify-between flex--align-items-start flex--column">
                 <ul class="flex flex--justify-start flex--align-items-start flex--column">
                     <li><h3>{{ menuStuff.name }}</h3></li>
-                    <li v-for="stuff in menuStuff.menu" :key="stuff">
+                    <li v-for="(stuff, index) in menuStuff.menu" :key="index">
                         <h3>
                             <a :href="stuff.url" :target="stuff.target">{{ stuff.title }}</a>
                         </h3>
@@ -15,7 +15,7 @@
                 </ul>
 				<ul class="flex flex--justify-start flex--align-items-start flex--column">
 					<li><h3>{{ menuContact.name }}</h3></li>
-					<li v-for="contact in menuContact.menu" :key="contact">
+					<li v-for="(contact,index) in menuContact.menu" :key="index">
                         <h3>
                             <a :href="contact.url" :target="contact.target">{{ contact.title }}</a>
                         </h3>

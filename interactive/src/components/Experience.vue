@@ -1,40 +1,51 @@
 <template>
-    <div class="slick-wrap">
-        <slick ref="slick" :options="slickOptions"  v-if="jobsInfo.length > 0">
-            <template v-for="job in jobsInfo">
-                <div class="card" :key="job">
-                  <div class="inner">
-                    <h3 class="job-timeline">{{ job.acf.start_date }} - {{ job.acf.end_date }}</h3>
-                    <h4 class="employer">
-                      <template v-if="job.acf.company_url">
-                        <a :href="job.acf.company_url"><span>{{ job.title.rendered}}</span></a>
-                      </template>
-                      <template v-else>
-                        <span>{{ job.title.rendered}}</span>
-                      </template>
-                    </h4>
-                    <p class="job-title">{{ job.acf.job_title }}</p>
-                    <p class="job-excerpt" v-html="job.excerpt.rendered"></p>
-                    <template v-if="job.tagList.length">
-                      <div class="skills-list">
-                        <h5>Skills</h5>
-                        <ul class="flex flex--justify-start flex--align-center flex--wrap">
-                          <li v-for="tag in job.tagList" :key="tag">
-                            <span>{{ tag.name }}</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </template>
-                    </div>
-                </div>
-            </template>
-        </slick>
+  <div class="slick-wrap">
+    <div class="arrow-wrapper">
+      <button id="slick-prev" type="button"><fa :icon="['fas','chevron-left']" /></button>
+      <button id="slick-next" type="button"><fa :icon="['fas','chevron-right']" /></button>
     </div>
+    <slick ref="slick" :options="slickOptions"  v-if="jobsInfo.length > 0">
+      <div class="card" v-for="(job,index) in jobsInfo" :key="index">
+        <section class="inner">
+          <div class="front">
+            <h3 class="job-timeline">
+              <fa :icon="['fas', 'calendar']" class="icon" />{{ job.acf.start_date }} - {{ job.acf.end_date }}</h3>
+            <h4 class="employer">
+              <template v-if="job.acf.company_url">
+                <a :href="job.acf.company_url"><span>{{ job.title.rendered}}</span></a>
+              </template>
+              <template v-else>
+                <span>{{ job.title.rendered}}</span>
+              </template>
+            </h4>
+            <h5 class="job-title">{{ job.acf.job_title }}</h5>
+            <article class="job-excerpt" v-html="job.excerpt.rendered"></article>
+              <template v-if="job.tagList.length">
+                <div class="skills-list">
+                  <h5>Skills</h5>
+                  <ul class="flex flex--justify-start flex--align-center flex--wrap">
+                    <li v-for="(tag,index) in job.tagList" :key="index">
+                      <span>{{ tag.name }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </template>
+            </div>
+            <div class="back">
+              <span class="token-wrapper avatar" :style="{ 'background-image':'url(' + token +')'}"></span>
+            </div>
+          </section>
+        </div>
+    </slick>
+    <div id="dots-wrapper"></div>
+  </div>
 </template>
 
 <script>
 import Slick from 'vue-slick';
 import 'slick-carousel/slick/slick.css';
+
+let token;
 
 export default {
   name: 'Experience',
@@ -50,10 +61,29 @@ export default {
               dots: true,
               draggable: true,
               edgeFriction: 0.30,
-              swipe: true
+              swipe: true,
+              prevArrow: '#slick-prev',
+              nextArrow: '#slick-next',
+              appendDots: '#dots-wrapper',
+              responsive: [
+                {
+                  breakpoint: 1200,
+                  settings: {
+                    slidesToShow: 2 
+                  }
+                },
+                {
+                  breakpoint: 700,
+                  settings: {
+                    slidesToShow: 1,
+                    arrows: false
+                  }
+                }
+              ]
               // Any other options that can be got from plugin documentation
           },
           jobsInfo: [],
+          token
       };
   },
   created: function() {
@@ -75,7 +105,18 @@ export default {
     },
     init: function(){
 			this.fetchEmployment();
+
+      this.fetchAvatar(42).then(function(result){
+        this.token = result;
+      });
 		},
+    fetchAvatar(id){
+        return this.$http.get('wp/v2/media/' + id).then((response) => {
+            return response.data.source_url; 
+        }, error => { 
+            alert(error) 
+        });
+    },  
     fetchEmployment() {
       this.$http.get('wp/v2/employment').then((response) => {  
         const jobsInfo = response.data;
@@ -112,11 +153,7 @@ export default {
         }
       }
     }
-  },
-  mounted: function(){
-    // this.fetchEmployment();
-  }
-  
+  },  
 }
 </script>
 
@@ -124,74 +161,192 @@ export default {
   @import '@/assets/scss/utility/_variables.scss';
   @import '@/assets/scss/utility/_mixins.scss';
 
-  .slick-track {
+  .slick-wrap {
+    position: relative;
+
+    .arrow-wrapper {
+      display: none;
+
+      @include at-least(700px) {
+        display: block;
+      }
+    }
+
+    .slick-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-271px);
+      height: 500px;
+      border: none;
+      background-color: transparent;
+      z-index: 9;
+
+      &.slick-disabled {
+        color: $grey-6;
+      }
+
+      &#slick-prev {
+        left: -.75rem;
+      }
+      &#slick-next {
+        right: -.75rem;
+      }
+    }
+  }
+  .slick-dots {
     @include flexbox;
+    @include justify-content(center);
+    @include align-items(center);
+    padding: 1rem;
 
-    .slick-slide {
-      height: inherit;
+    li {
+      button {
+        text-indent: -9999px;
+        display: block;
+        height: .825rem;
+        width: .825rem;
+        padding: 0;
+        border: none;
+        border-radius: 100%;
+        background-color: $grey-7;
+        margin: .5rem;
+        transition: all .25s ease-in-out;
 
-      > div {
-        height: 100%;
+        &:hover, &:focus {
+          cursor: pointer;
+        }
+      }
+
+      &.slick-active {
+        button {
+          background-color: $accent-orange;
+        }
       }
     }
   }
 
   .card {
-    height: inherit;
+    padding: 1rem 0;
 
     .inner {
-      background-color: $grey-8;
-      padding: 1rem;
-      border: 2px solid $grey-4;
-      height: 100%;
+      transition: transform 0.6s;
+      transition-delay: 500ms;
+      transform-style: preserve-3d;
+      position: relative;
+      border: 2px solid $blk;
+      border-radius: .5rem;
+      height: 500px;
+      margin: 0 1rem;
+      box-shadow: -2px 2px 5px rgba(29,29,29,.5);
+
+      .front, .back {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+
+      .front {
+        @include flexbox;
+        @include flex-direction(column);
+        padding: 1rem;
+        background-color: $chocolate;
+        border: .5rem solid $wht;
+        transform: rotateY(180deg);
+      }
+      .back {
+        background-color: $chocolate-drk;
+        border: .5rem solid $blk;
+        left: 0;
+        right: 0;
+
+        .avatar {
+          display: block;
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 60%;
+        }
+      }
     }
 
     .job-timeline {
       font-size: .75rem;
       font-family: $roboto-mono;
+      color: $off-wht;
+
+      .icon {
+        margin-right: .5rem;
+      }
     }
 
     .employer {
       font-family: $roboto-slab;
       font-weight: 500;
       font-size: 1.5rem;
+      color: $off-wht;
+      margin-bottom: .25rem;
 
       a {
         text-decoration: none;
+        color: $off-wht;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
 
     .job-title {
       font-style: italic;
       font-size: .875rem;
-      border-bottom: 2px solid $grey-4;
+      border-bottom: 2px solid $accent-orange;
       padding-bottom: .25rem;
       margin-bottom: .5rem;
+      color: $grey-6;
     }
 
     .job-excerpt {
       margin-bottom: 1rem;
+      padding: .5rem;
+      background-color: $wht;
+      border-radius: .25rem;
+
+      p {
+        line-height: 1.25rem;
+        font-size: .875rem;
+      }
     }
 
     .skills-list {
+      margin-top: auto;
+
       h5 {
         font-family: $roboto-slab;
         font-weight: 500;
         border-bottom: 1px solid $accent-orange;
         margin-bottom: .5rem;
+        color: $off-wht;
       }
 
       ul {
         li {
           span {
             font-size: .625rem;
-            background-color: $grey-7;
+            background-color: $grey-8;
             padding: .25rem;
             border-radius: 5px;
             margin: 0 .5rem .25rem 0;
             display: inline-block;
           }
         }
+      }
+    }
+
+    .slick-active & {
+      .inner {
+        transform: rotateY(180deg);
       }
     }
   }

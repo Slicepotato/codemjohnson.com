@@ -3,7 +3,10 @@
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <img class="avatar" :src="token">
-                <span>{{  }}</span>
+                <div class="user-meta">
+                    <p class="say-my-name">{{ user.name }}</p>
+                    <p class="title">{{ user.description }}</p>
+                </div>
             </h1>
         </div>
     </header>
@@ -26,16 +29,16 @@ export default {
     },
     methods: {
         init: function() {
-            this.sayMyName(1).then(function(result){
+            this.userData(1).then(function(result){
                 this.user = result;
             });
             this.fetchAvatar(42).then(function(result){
                 this.token = result;
             });
         },
-        sayMyName(uid){
+        userData(uid){
             return this.$http.get('wp/v2/users/' + uid).then((response) => {
-                return response.data.name;
+                return response.data;
             }, error => { 
                 alert(error) 
             });
@@ -63,6 +66,15 @@ export default {
             .avatar {
                 width: 4rem;
                 margin-right: 1rem;
+            }
+
+            .user-meta {
+                .title {
+                    font-size: 1rem;
+                    font-family: $roboto-slab;
+                    color: $grey-4;
+                    font-weight: 500;;
+                }
             }
         }
     }

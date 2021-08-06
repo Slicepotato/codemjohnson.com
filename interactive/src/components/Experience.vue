@@ -19,6 +19,7 @@
               </template>
             </h4>
             <h5 class="job-title">{{ job.acf.job_title }}</h5>
+            <img class="job-img" v-if="job.acf.featured_image" :src="job.acf.featured_image.url" />
             <article class="job-excerpt" v-html="job.excerpt.rendered"></article>
               <template v-if="job.tagList.length">
                 <div class="skills-list">
@@ -151,7 +152,7 @@ export default {
           const res = this.tags.find(obj => {
             if(obj.id === jobsArray[job].acf.skills_list[tag]){
               return obj;
-            };
+            }
           });
           jobsArray[job]['tagList'].push({'name':res.name}); 
         }
@@ -194,6 +195,10 @@ export default {
       }
       &#slick-next {
         right: -.75rem;
+      }
+
+      &:hover, &:focus {
+        cursor: pointer;
       }
     }
 
@@ -317,6 +322,12 @@ export default {
       color: $grey-6;
     }
 
+    .job-img {
+      width: 100%;
+      margin-bottom: .5rem;
+      border: 2px solid $wht;
+    }
+
     .job-excerpt {
       margin-bottom: 1rem;
       padding: .5rem;
@@ -344,7 +355,9 @@ export default {
         li {
           span {
             font-size: .625rem;
-            background-color: $grey-8;
+            font-weight: 400;
+            background-color: $chocolate-drkr;
+            color: $grey-8;
             padding: .25rem;
             border-radius: 5px;
             margin: 0 .5rem .25rem 0;

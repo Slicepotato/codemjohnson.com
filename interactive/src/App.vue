@@ -67,12 +67,14 @@ export default {
       setInterval(function(){
         if(i === 101)  {
           clearInterval(this);
-          self.loading = false;
+          setTimeout(function(){ 
+            self.loading = false;
+          }, 1000);
         } else {
           self.percent = i + '%';
           i++;
         }
-      }, 50);
+      }, 25);
       
     }
   }

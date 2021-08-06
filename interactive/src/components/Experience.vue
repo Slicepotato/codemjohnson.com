@@ -32,7 +32,7 @@
               </template>
             </div>
             <div class="back">
-              <span class="token-wrapper avatar" :style="{ 'background-image':'url(' + token +')'}"></span>
+              <span class="card-bg" :style="{ 'background-image':'url(' + cardBack +')'}"></span>
             </div>
           </section>
         </div>
@@ -46,6 +46,7 @@ import Slick from 'vue-slick';
 import 'slick-carousel/slick/slick.css';
 
 let token;
+let cardBack;
 
 export default {
   name: 'Experience',
@@ -73,7 +74,7 @@ export default {
                   }
                 },
                 {
-                  breakpoint: 700,
+                  breakpoint: 850,
                   settings: {
                     slidesToShow: 1,
                     arrows: false
@@ -84,7 +85,8 @@ export default {
           },
           jobsInfo: [],
           tags: [],
-          token
+          token,
+          cardBack
       };
   },
   created: function() {
@@ -106,11 +108,14 @@ export default {
     init: function(){
       this.fetchTags();
 
-      this.fetchAvatar(42).then(function(result){
+      this.fetchMedia(42).then(function(result){
         this.token = result;
       });
+      this.fetchMedia(55).then(function(result){
+        this.cardBack = result;
+      });
 		},
-    fetchAvatar(id){
+    fetchMedia(id){
         return this.$http.get('wp/v2/media/' + id).then((response) => {
             return response.data.source_url; 
         }, error => { 
@@ -166,7 +171,7 @@ export default {
     .arrow-wrapper {
       display: none;
 
-      @include at-least(700px) {
+      @include at-least(850px) {
         display: block;
       }
     }
@@ -238,8 +243,10 @@ export default {
       position: relative;
       border: 2px solid $blk;
       border-radius: .5rem;
-      height: 500px;
-      margin: 0 1rem;
+      width: 100%;
+      max-width: 360px;
+      height: 600px;
+      margin: 0 auto;
       box-shadow: -2px 2px 5px rgba(29,29,29,.5);
 
       .front, .back {
@@ -264,12 +271,12 @@ export default {
         left: 0;
         right: 0;
 
-        .avatar {
+        .card-bg {
           display: block;
           height: 100%;
           background-position: center;
           background-repeat: no-repeat;
-          background-size: 60%;
+          background-size: cover;
         }
       }
     }

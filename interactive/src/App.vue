@@ -62,20 +62,30 @@ export default {
       });
     },
     pageLoad() {
-      let i = 0;     
+      let i = 0; 
+      let k = 20;    
       const self = this; 
       setInterval(function(){
-        if(i === 101)  {
+        if(i === 21)  {
           clearInterval(this);
           setTimeout(function(){ 
-            self.loading = false;
-          }, 1000);
+            setInterval(function(){
+              if(k === 101)  {
+                clearInterval(this);
+                setTimeout(function(){ 
+                  self.loading = false;
+                }, 500);
+              } else {
+                self.percent = k + '%';
+                k++;
+              }
+            }, 10);
+          }, 500);
         } else {
           self.percent = i + '%';
           i++;
         }
       }, 25);
-      
     }
   }
 }

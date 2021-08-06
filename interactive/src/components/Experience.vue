@@ -12,7 +12,7 @@
               <fa :icon="['fas', 'calendar']" class="icon" />{{ job.acf.start_date }} - {{ job.acf.end_date }}</h3>
             <h4 class="employer">
               <template v-if="job.acf.company_url">
-                <a :href="job.acf.company_url"><span>{{ job.title.rendered}}</span></a>
+                <a :href="job.acf.company_url" target="_blank"><span>{{ job.title.rendered}}</span></a>
               </template>
               <template v-else>
                 <span>{{ job.title.rendered}}</span>

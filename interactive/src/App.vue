@@ -95,21 +95,6 @@ export default {
   @import '@/assets/scss/utility/_variables.scss';
 
   .load-wrapper {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    
-    width: 100vw;
-    height: 100vh;
-    z-index: 999;
-    transition: all .25s ease-in-out;
-
-    &.init {
-      background-color: $blk;
-    }
-    
     .loading {
       position: absolute;
       top: 50%;
@@ -142,6 +127,19 @@ export default {
         background-color: $accent-orange;
         width:0;
       }
+    }
+
+    &.init {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 999;
+      transition: all .25s ease-in-out;
+      background-color: $blk;
     }
   }
 </style>

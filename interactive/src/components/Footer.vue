@@ -6,16 +6,16 @@
 			</div>
 			<div class="footerMeta flex flex--justify-between flex--align-items-start flex--column">
                 <ul class="flex flex--justify-start flex--align-items-start flex--column">
-                    <li><h3>{{ menuStuff.name }}</h3></li>
-                    <li v-for="(stuff, index) in menuStuff.menu" :key="index">
+                    <li><h3>{{ menuStuffName }}</h3></li>
+                    <li v-for="(stuff, index) in menuStuff[0]" :key="index">
                         <h3>
                             <a :href="stuff.url" :target="stuff.target">{{ stuff.title }}</a>
                         </h3>
                     </li>
                 </ul>
 				<ul class="flex flex--justify-start flex--align-items-start flex--column">
-					<li><h3>{{ menuContact.name }}</h3></li>
-					<li v-for="(contact,index) in menuContact.menu" :key="index">
+					<li><h3>{{ menuContactName }}</h3></li>
+					<li v-for="(contact,index) in menuContact[0]" :key="index">
                         <h3>
                             <a :href="contact.url" :target="contact.target">{{ contact.title }}</a>
                         </h3>
@@ -28,6 +28,8 @@
 
 <script>    
 let user;
+let menuContactName;
+let menuStuffName;
 
 export default {
     name: 'Footer',
@@ -36,7 +38,9 @@ export default {
             slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
             user,
             menuContact: [],
+            menuContactName,
             menuStuff: [],
+            menuStuffName
         }
     },
     components: {
@@ -46,7 +50,7 @@ export default {
         this.init();          
     },
     mounted() {
-        
+        // console.log(this.menuStuff)
     },
     computed: {
         currentRouteName() {
@@ -56,18 +60,20 @@ export default {
     methods: {
         init: function(){
             this.getStuffIDid(2).then(function(menu){
+                this.menuStuff.push(menu);
+            }).then(function(){
                 this.getMenuTitles().then(function(title){
                     let menuName = title.find(i => i.term_id === 2);
-                    this.menuStuff['name'] = menuName.name;
+                    this.menuStuffName = menuName.name;
                 });
-                this.menuStuff['menu'] = menu;
             });
             this.getContactInfo(3).then(function(menu){
+                this.menuContact.push(menu);
+            }).then(function(){
                 this.getMenuTitles().then(function(title){
                     let menuName = title.find(i => i.term_id === 3);
-                    this.menuContact['name'] = menuName.name;
+                    this.menuContactName = menuName.name;
                 });
-                this.menuContact['menu'] = menu;
             });
             this.sayMyName(1).then(function(result){
                 this.user = result;

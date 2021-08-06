@@ -67,7 +67,7 @@ export default {
               appendDots: '#dots-wrapper',
               responsive: [
                 {
-                  breakpoint: 1200,
+                  breakpoint: 1160,
                   settings: {
                     slidesToShow: 2 
                   }
@@ -83,12 +83,12 @@ export default {
               // Any other options that can be got from plugin documentation
           },
           jobsInfo: [],
+          tags: [],
           token
       };
   },
   created: function() {
     this.init(); 
-    // this.fetchEmployment();   
   },
   methods: {
     next() {
@@ -104,7 +104,7 @@ export default {
         });
     },
     init: function(){
-			this.fetchEmployment();
+      this.fetchTags();
 
       this.fetchAvatar(42).then(function(result){
         this.token = result;
@@ -119,21 +119,17 @@ export default {
     },  
     fetchEmployment() {
       this.$http.get('wp/v2/employment').then((response) => {  
-        const jobsInfo = response.data;
+        this.jobsInfo = response.data;
 
-        const tagInit = this.initTagArray(jobsInfo);
-
-        this.addTagArray(tagInit);
-
-        this.jobsInfo = jobsInfo;
-
+        this.initTagArray(this.jobsInfo);
       }).catch((error) => { 
-        alert(error);
+        alert('job: ' + error);
       });
     },
-    fetchTags(tagList) {
-      return this.$http.get('wp/v2/tags/' + tagList).then((response) => {
-        return response.data;
+    fetchTags() {
+      this.$http.get('wp/v2/tags?per_page=100').then((response) => {
+        this.tags = response.data;
+        this.fetchEmployment();
       }).catch((error) => { 
         alert(error) 
       });
@@ -142,13 +138,16 @@ export default {
       for(let job in jobsArray){
         jobsArray[job]['tagList'] = [];
       }
-      
-      return jobsArray;
+      this.addTagArray(jobsArray);
     },
-    async addTagArray(jobsArray){
+    addTagArray(jobsArray){
       for(let job in jobsArray){
         for(let tag in jobsArray[job].acf.skills_list) {
-          const res = await this.fetchTags(jobsArray[job].acf.skills_list[tag]);
+          const res = this.tags.find(obj => {
+            if(obj.id === jobsArray[job].acf.skills_list[tag]){
+              return obj;
+            };
+          });
           jobsArray[job]['tagList'].push({'name':res.name}); 
         }
       }
@@ -191,6 +190,10 @@ export default {
       &#slick-next {
         right: -.75rem;
       }
+    }
+
+    .slick-slider {
+        padding: 0 .5rem;
     }
   }
   .slick-dots {

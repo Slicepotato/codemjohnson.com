@@ -1,10 +1,17 @@
 <template>
   <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
-    <app-header></app-header>
+    <div id="load-wrapper" class="load-wrapper" :class="[loading ? 'init' : '']">
+      <div class="loading" v-if="loading">
+        <h1>loading</h1>
+        <p id="percent" ref="percent" class="loading-text">{{ percent }}</p>
+        <span id="bar" ref="bar" class="loading-bar" :style="{ 'width':percent }"></span>
+      </div>
+    </div>
+    <Header/>
     <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
       <router-view/>
     </div>
-    <app-footer></app-footer>
+    <Footer/>
   </div>
 </template>
 
@@ -14,43 +21,115 @@ import Footer from '@/components/Footer.vue';
 
 let pageBg;
 let footerBg;
+let percent;
 
 export default {
   data () {
     return {
-      footerBgSlug: 'footer-bg-codemj',
-      pageBgSlug: 'background-texture',
       footerBg,
       pageBg,
-      img: [],
+      loading: false,
+      percent,
     }
   },
   components: {
-    appFooter: Footer,
-    appHeader: Header,
+    Footer,
+    Header,
   },
   created: function() {
-    // Fetch | Media -- Footer
-    this.$http.get('wp/v2/media/?slug=' + this.footerBgSlug).then(response => {
-        for(let media in response.data){
-            this.footerBg = response.data[media].source_url;    
-        } 
-    }, error => { 
-        alert(error) 
-    });
-
-    // Fetch | Media -- Page BG
-    this.$http.get('wp/v2/media/?slug=' + this.pageBgSlug).then(response => {
-        for(let media in response.data){
-            this.pageBg = response.data[media].source_url;    
-        } 
-    }, error => { 
-        alert(error) 
-    });
+    this.init();    
+    this.loading = true;
+  }, 
+  mounted: function() {    
+    this.pageLoad();
   },
+  methods: {
+    init: function(){
+			this.fetchMedia('footer-bg-codemj').then(function(result){
+        this.footerBg = result
+      });
+      this.fetchMedia('background-texture').then(function(result){
+        this.pageBg = result;
+      });
+		},
+    fetchMedia(slug){
+      return this.$http.get('wp/v2/media/?slug=' + slug).then((response) => {
+          for(let media in response.data){
+              return response.data[media].source_url;    
+          } 
+      }, error => { 
+          alert(error) 
+      });
+    },
+    pageLoad() {
+      let i = 0;     
+      const self = this; 
+      setInterval(function(){
+        if(i === 101)  {
+          clearInterval(this);
+          self.loading = false;
+        } else {
+          self.percent = i + '%';
+          i++;
+        }
+      }, 50);
+      
+    }
+  }
 }
 </script>
 
 <style lang="scss">
+  @import '@/assets/scss/utility/_variables.scss';
 
+  .load-wrapper {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    transition: all .25s ease-in-out;
+
+    &.init {
+      background-color: $blk;
+    }
+    
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: $sm;
+      width: 100%;
+      text-align: center;
+      padding: 1rem;
+
+      h1 {
+        font-weight: 300;
+        color: $accent-orange;
+        font-size: 3em;
+        margin: 0;
+        line-height: .25;
+      }
+      
+      .loading-text {
+        font-weight: 700;
+        font-size: 5em;
+        line-height: 1;
+        margin: .25em 0 0;
+        color: $grey-8;
+      }
+      
+      .loading-bar {
+        display: block;
+        height: 2px;
+        background-color: $accent-orange;
+        width:0;
+      }
+    }
+  }
 </style>

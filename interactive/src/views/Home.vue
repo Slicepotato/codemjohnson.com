@@ -2,11 +2,15 @@
   <div class="home content-wrap">
     <div class="page-content" v-html="item.content.rendered" v-for="(item, index) in page" :key="index"></div>
     <Experience/>
+    <About/>
+    <Elsewise/>
   </div>
 </template>
 
 <script>
 import Experience from '@/components/Experience.vue';
+import About from '@/components/About.vue';
+import Elsewise from '@/components/Elsewise.vue';
 
 export default {
   name: 'Home',
@@ -17,23 +21,30 @@ export default {
     }
   },
   components: {
-    Experience
+    Experience,
+    About,
+    Elsewise
   },
   created: function() {
-    // Fetch | Page Data
-    this.$http.get('wp/v2/pages?slug=' + this.slug).then(response => {
-      for(let item in response.data){
-        this.page.push(response.data[item]);
-      }
-      // console.log(response);
-    }, error => { 
-      alert(error) 
-    });
+    this.getContentBlock(this.slug);
+  },
+  methods: {
+    getContentBlock(slug) {
+      // Fetch | Page Data
+      this.$http.get('wp/v2/pages?slug=' + slug).then(response => {
+        for(let item in response.data){
+          this.page.push(response.data[item]);
+        }
+        // console.log(response);
+      }, error => { 
+        alert(error) 
+      });
+    }
   },
   computed: {
     currentRouteName() {
         return this.$route.name;
-    }
+    },
   }
 }
 </script>

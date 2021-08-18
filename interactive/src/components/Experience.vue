@@ -268,6 +268,7 @@ export default {
         padding: 1rem;
         background-color: $chocolate;
         border: .5rem solid $wht;
+        border-radius: .5rem;
         transform: rotateY(180deg);
       }
       .back {

@@ -1,9 +1,17 @@
 <template>
   <div class="home content-wrap">
     <div class="page-content" v-html="item.content.rendered" v-for="(item, index) in page" :key="index"></div>
-    <Experience/>
-    <About/>
-    <Elsewise/>
+    <Experience />
+    <About />
+    <section class="page-content">
+      <h2 class="stat-title stat-title--sm stat-title--divider">
+        Examples
+      </h2>
+      <p class="content">
+        <router-link to="/quicksack">Quicksack</router-link>
+      </p>
+    </section>
+    <Elsewise />
   </div>
 </template>
 

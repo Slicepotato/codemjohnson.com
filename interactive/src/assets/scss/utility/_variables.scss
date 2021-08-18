@@ -7,6 +7,10 @@ $md: 960px;
 $lg: 1200px;
 $xl: 1600px;
 
+$col2: $xl / 2.75;
+$col3: $xl / 3.75;
+$col4: $xl / 4.75;
+
 // Colors
 $wht: #ffffff;
 $blk: #1b1b1b;
@@ -30,3 +34,18 @@ $accent-teal: #00a79d;
 $chocolate: #5a4347;
 $chocolate-drk: #54031a;
 $chocolate-drkr: #2d2224;
+
+$err-red: #cc1100;
+
+$riv-blue: #468dd3;
+$riv-blue-dk: #2767a5;
+
+// z-index scale
+$z-index-1: 250;
+$z-index-2: 500;
+$z-index-3: 750;
+$z-index-4: 1000;
+$z-index-5: 1250;
+$z-index-6: 1500;
+$z-index-7: 1750;
+$z-index-8: 2000;

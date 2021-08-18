@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header v-if="showHeader($route.name)">
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <img class="avatar" :src="token">
@@ -34,6 +34,11 @@ export default {
             this.fetchAvatar(42).then(function(result){
                 this.token = result;
             });
+        },
+        showHeader: function(route){
+            if (route == 'Home') { 
+                return true;
+            }
         },
         userData(uid){
             return this.$http.get('wp/v2/users/' + uid).then((response) => {

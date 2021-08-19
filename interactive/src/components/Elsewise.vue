@@ -25,11 +25,9 @@ export default {
     getContentBlock(slug) {
       // Fetch | Page Data
       this.$http.get('wp/v2/pages?slug=' + slug).then(response => {
-          console.log(response.data)
         for(let item in response.data){
           this.page.push(response.data[item]);
         }
-        // console.log(response);
       }, error => { 
         alert(error) 
       });

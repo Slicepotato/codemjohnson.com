@@ -31,7 +31,6 @@ export default {
                     key: 'AIzaSyA3CyPmdzBxT2h439TOuN-UxAQnD77244Q'
                 }
             }).then(response => {
-                console.log(response);
                 this.comingSoon = response.data.values[0][0];
             });
         }

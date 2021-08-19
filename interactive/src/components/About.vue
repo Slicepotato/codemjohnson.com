@@ -19,7 +19,6 @@ export default {
     }
   },
   created: function() {
-      console.log(this.$options.name)
     this.getContentBlock(this.slug);
   },
   methods: {
@@ -29,7 +28,6 @@ export default {
         for(let item in response.data){
           this.page.push(response.data[item]);
         }
-        // console.log(response);
       }, error => { 
         alert(error) 
       });

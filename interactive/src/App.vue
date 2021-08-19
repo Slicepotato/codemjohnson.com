@@ -1,6 +1,6 @@
 <template>
   <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
-    
+    <PageLoad />
     <Header />
     <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
       <router-view />

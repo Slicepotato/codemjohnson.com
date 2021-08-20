@@ -9,7 +9,7 @@
       </h2>
       <p class="content">
         <router-link to="/quicksack">Quicksack</router-link>
-        <router-link to="/moar-dots">Moar Dots</router-link>
+        <router-link to="/light-dots">Light Dots</router-link>
       </p>
     </section>
     <Elsewise />

@@ -24,8 +24,8 @@ const routes = [
     component: Episode,
   },
   {
-    path: "/moar-dots",
-    name: "MoarDots",
+    path: "/light-dots",
+    name: "Light Dots",
     component: MoarDots,
   },
 ]

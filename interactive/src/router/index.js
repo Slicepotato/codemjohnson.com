@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import Quicksack from "@/views/Quicksack.vue";
 import Episode from "@/components/quicksack/Episode.vue";
+import LightDots from "@/views/LiteBrite.vue";
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/quicksack/:episodeId",  // <-- notice the colon
     name: "Details",
     component: Episode,
+  },
+  {
+    path: "/light-dots",
+    name: "LightDots",
+    component: LightDots,
   },
 ]
 

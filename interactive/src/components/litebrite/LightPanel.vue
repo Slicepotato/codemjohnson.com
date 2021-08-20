@@ -10,11 +10,11 @@
 
 <script>
 export default {
-    name: 'Light Dots',
+    name: 'LightDots',
     data() {
         return {
+            windowWidth: window.innerWidth,
             lights: [],
-            windowWidth: window.innerWidth
         }
     },
     created: function() {
@@ -41,10 +41,13 @@ export default {
             this.makeDots(this.windowWidth);
         },
         deBounce(func) {
-            var timer;
+            let timer;
             return function(event){
-                if(timer) clearTimeout(timer);
-                timer = setTimeout(func,100,event);
+                if(timer){
+                    clearTimeout(timer);
+                } else {
+                    timer = setTimeout(func,100,event);
+                }
             };
         },
         makeDots(ww) {
@@ -76,7 +79,7 @@ export default {
     .panel-wrapper {
         background-color: $blk;
         padding: 1rem;
-        margin: 0 1rem;
+        border-radius: .5rem;
     }
     .dot-grid {
         list-style-type: none;

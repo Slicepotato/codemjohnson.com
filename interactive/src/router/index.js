@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import Quicksack from "@/views/Quicksack.vue";
 import Episode from "@/components/quicksack/Episode.vue";
-import MoarDots from "@/views/LiteBrite.vue";
+import LightDots from "@/views/LiteBrite.vue";
 
 Vue.use(VueRouter)
 
@@ -25,8 +25,8 @@ const routes = [
   },
   {
     path: "/light-dots",
-    name: "Light Dots",
-    component: MoarDots,
+    name: "LightDots",
+    component: LightDots,
   },
 ]
 

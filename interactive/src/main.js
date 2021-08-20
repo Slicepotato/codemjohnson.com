@@ -5,19 +5,20 @@ import router from './router'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendar, faChevronLeft, faChevronRight, faExternalLinkAlt, faStopCircle, faPlayCircle, faLink, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-// import { faFontAwesome } from '@fortawesome/free-brands-svg-icons'
+import { faJs, faVuejs, faHtml5, faSass } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VueCodeHighlight from 'vue-code-highlight';
 
 import "@/assets/scss/style.scss";
 
-library.add(faCalendar, faChevronLeft, faChevronRight, faExternalLinkAlt, faStopCircle, faPlayCircle, faLink, faAngleUp)
+library.add(faCalendar, faChevronLeft, faChevronRight, faExternalLinkAlt, faStopCircle, faPlayCircle, faLink, faAngleUp, faJs, faVuejs, faHtml5, faSass)
 
 Vue.component('fa', FontAwesomeIcon)
 
 // Usage -----
 // <fa icon="user-secret" />
 
-Vue.use(VueResource);
+Vue.use(VueResource,VueCodeHighlight);
 
 Vue.http.options.root = 'https://wp.codemjohnson.com/wp-json';
 

@@ -198,3 +198,24 @@ h3 {
         }
     }
 }
+
+.tech-stack {
+    padding: 1rem 0;
+
+    li {
+        font-size: 2rem;
+        margin-left: .5rem;
+        color: $grey-5;
+    }
+}
+
+.code-block {
+    margin-bottom: 1rem;
+    
+    code, pre {
+        font-family: 'Roboto Mono', monospace;
+        font-size: .8rem;
+        font-weight: 600;
+        tab-size: 1;
+    }
+}

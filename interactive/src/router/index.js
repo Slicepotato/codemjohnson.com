@@ -4,6 +4,7 @@ import Home from '@/views/Home.vue'
 import Quicksack from "@/views/Quicksack.vue";
 import Episode from "@/components/quicksack/Episode.vue";
 import LightDots from "@/views/LiteBrite.vue";
+import Sammy from "@/views/Sammy.vue";
 import NotFound from '@/views/NotFound.vue';
 
 Vue.use(VueRouter)
@@ -28,6 +29,11 @@ const routes = [
     path: "/light-dots",
     name: "LightDots",
     component: LightDots,
+  },
+  {
+    path: "/ice-cream-sammitch",
+    name: "Sammy",
+    component: Sammy,
   },
   {
     path: '*',

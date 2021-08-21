@@ -44,7 +44,6 @@ export default {
             this.getContentBlock(this.slug);
         },
         getAdditionalBlock(header){
-            console.log(header);
             for(let content in this.page){
                 let block = this.page[content].acf.additional_content_blocks.find(b => b.header === header);
                 return block.content;

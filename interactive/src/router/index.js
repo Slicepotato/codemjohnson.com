@@ -4,6 +4,7 @@ import Home from '@/views/Home.vue'
 import Quicksack from "@/views/Quicksack.vue";
 import Episode from "@/components/quicksack/Episode.vue";
 import LightDots from "@/views/LiteBrite.vue";
+import NotFound from '@/views/NotFound.vue';
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     name: "LightDots",
     component: LightDots,
   },
+  {
+    path: '*',
+    name: 'Not Found',
+    component: NotFound
+  }
 ]
 
 const router = new VueRouter({

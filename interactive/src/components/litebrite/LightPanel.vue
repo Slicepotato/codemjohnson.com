@@ -1,6 +1,6 @@
 <template>
     <div class="panel-wrapper">
-        <ul class="dot-grid">
+        <ul class="dot-grid" ref="dotgrid">
             <li v-for="(dot,index) in lights" :key="index" :class="{on: dot.isActive}">
                 <button type="button" @click="lightUp(dot.id)"></button>
             </li>
@@ -14,6 +14,9 @@ export default {
     data() {
         return {
             windowWidth: window.innerWidth,
+            gridW: null,
+            gridH: null,
+            dot: null,
             lights: [],
         }
     },
@@ -26,6 +29,10 @@ export default {
                 this.onResize;
             }));
         });
+
+        this.gridW = this.$refs.dotgrid.clientWidth;
+        this.gridH = this.$refs.dotgrid.clientHeight;
+        this.makeDots(this.gridW, this.gridH);
     },
     beforeDestroy() { 
         window.removeEventListener('resize', this.deBounce(function(){
@@ -34,11 +41,12 @@ export default {
     },
     methods: {
         init: function(){
-            this.makeDots(this.windowWidth);
+            
         },
         onResize() {
-            this.windowWidth = window.innerWidth;
-            this.makeDots(this.windowWidth);
+            this.gridW = this.$refs.dotgrid.clientWidth;
+            this.gridH = this.$refs.dotgrid.clientHeight;
+            this.makeDots(this.gridW, this.gridH);
         },
         deBounce(func) {
             let timer;
@@ -50,9 +58,9 @@ export default {
                 }
             };
         },
-        makeDots(ww) {
+        makeDots(gw, gh) {
             this.lights.length = 0;
-            let grid = Math.pow(Math.floor(ww / 33), 2);
+            let grid = Math.floor(gw / 26) * Math.floor(gh / 26);
             for (let i = 0; i < grid; i++) {
                 let bulb = {
                     id: i,
@@ -89,7 +97,7 @@ export default {
         grid-template-rows: repeat(auto-fill, 25px);
         grid-row-gap: 5px;
         grid-column-gap: 5px;
-        height: 92vh;
+        height: 93vh;
         overflow: hidden;
         
         $colors: #AAFF00, #FFAA00, #FF00AA, #AA00FF, #00AAFF;

@@ -97,7 +97,7 @@ export default {
         grid-template-rows: repeat(auto-fill, 25px);
         grid-row-gap: 5px;
         grid-column-gap: 5px;
-        height: 92vh;
+        height: 93vh;
         overflow: hidden;
         
         $colors: #AAFF00, #FFAA00, #FF00AA, #AA00FF, #00AAFF;

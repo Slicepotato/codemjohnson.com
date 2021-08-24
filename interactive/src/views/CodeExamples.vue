@@ -41,7 +41,7 @@ export default {
     },
     computed: {
         getComponent() {
-            console.log(this.$route.name)
+            // console.log(this.$route.name)
             return () => import(`@/components/${this.$route.name.toLowerCase()}/${this.$route.name}.vue`);
         }
     },

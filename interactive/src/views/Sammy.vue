@@ -1,18 +1,15 @@
 <template>
-    <div class="light-dots content-wrap">
+    <div class="sammy content-wrap">
         <div class="page-content" v-for="(item, c) in page" :key="c">
             <h1 class="stat-title">{{ item.title.rendered }}</h1>
             <div v-html="item.content.rendered"></div>
-
+            <IceCream />
         <template v-if="item.acf.code">
             <h3 class="stat-title stat-title--sm stat-title--divider">{{ item.acf.code[0].block_name }}</h3>
             <code-highlight class="code-block" language="javascript">
                 {{ item.acf.code[0].block }}
             </code-highlight>
         </template>
-            <p class="content">{{ getAdditionalBlock('reflection') }}</p>
-            <h2 class="stat-title stat-title--divider">{{ item.acf.example_panel_label }}</h2>
-            <Panel />
             <ul class="tech-stack flex flex--justify-end flex--align-items-center">
             <li v-for="(tech, t) in item.acf.technologies" :key="t" > 
                 <fa :icon="['fab',tech.tech_list]" />
@@ -23,14 +20,14 @@
 </template>
 
 <script>
-import Panel from '@/components/litebrite/LightPanel.vue';
+import IceCream from '@/components/sammy/IceCream.vue';
 import CodeHighlight from "vue-code-highlight/src/CodeHighlight.vue";
 import 'vue-code-highlight/themes/prism-twilight.css';
 
 export default {
-    name: 'MoarDots',
+    name: 'IceCreamSammy',
     components: {
-        Panel,
+        IceCream,
         CodeHighlight
     },
     data() {

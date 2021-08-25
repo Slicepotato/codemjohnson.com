@@ -42,7 +42,7 @@ export default {
     computed: {
         getComponent() {
             // console.log(this.$route.name)
-            return () => import(`@/components/${this.$route.name.toLowerCase()}/${this.$route.name}.vue`);
+            return () => import(`@/components/code-examples/${this.$route.name}.vue`);
         }
     },
     methods: {

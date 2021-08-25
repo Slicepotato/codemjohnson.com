@@ -1,11 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-//import Quicksack from "@/views/Quicksack.vue";
-import Episode from "@/components/quicksack/Episode.vue";
-// import LightDots from "@/views/LiteBrite.vue";
-// import Sammy from "@/views/Sammy.vue";
-//import ColorPop from "@/views/ColorPop.vue";
+// import Episode from "@/components/code-examples/quicksack/Episode.vue";
+import QuickSack from "@/views/QuickSack.vue";
 import CodeExamples from "@/views/CodeExamples.vue";
 import NotFound from '@/views/NotFound.vue';
 
@@ -23,15 +20,6 @@ const routes = [
     component: CodeExamples,
     children: [
       {
-        path: "/quicksack",
-        name: "Quicksack",
-      },
-      {
-        path: "/quicksack/:episodeId",  // <-- notice the colon
-        name: "Details",
-        component: Episode,
-      },
-      {
         path: "/light-dots",
         name: "LightDots",
       },
@@ -43,6 +31,17 @@ const routes = [
         path: "/color-pop",
         name: "ColorPop",
       }
+    ]
+  },
+  {
+    path: "/quicksack",
+    name: "Quicksack",
+    component: QuickSack,
+    children: [
+      {
+        path: "/quicksack/:episodeId",  // <-- notice the colon
+        name: "Details",
+      },
     ]
   },
   {

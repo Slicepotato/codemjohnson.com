@@ -1,8 +1,8 @@
 <template>
-    <header v-if="showHeader($route.name)">
+    <header>
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
-                <img class="avatar" :src="token">
+                <router-link to="/"><img class="avatar" :src="token"></router-link>
                 <div class="user-meta" v-for="(my, index) in user" :key="index">
                     <p class="say-my-name">{{ my.name }}</p>
                     <p class="title">{{ my.description }}</p>

@@ -8,8 +8,8 @@
             <p class="site-desc">Looking to see if <b>FilmSack</b> has already covered a film? You can search here to find when they talked about it and listen to the fun.</p>
         </header>
         <UpNext />
-        <QuickSearch v-bind:items="items" v-on:search="resultQuery" />        
-        <Episode v-bind:items="searchQuery ? searchQuery : items" /> 
+        <QuickSearch v-if="$route.name == 'Quicksack'" v-bind:items="items" v-on:search="resultQuery" />        
+        <Episode v-bind:items="items" /> 
         <button 
             @click="scrollTop()" 
             id="return" 

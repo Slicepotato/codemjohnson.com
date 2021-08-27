@@ -30,6 +30,9 @@ export default {
     PageLoad
   },
   created: function() {
+    this.fetchMedia('background-texture').then(function(result){
+      this.pageBg = result;
+    });
     this.init();    
   }, 
   mounted: function() {    
@@ -38,9 +41,6 @@ export default {
     init: function(){
 			this.fetchMedia('footer-bg-codemj').then(function(result){
         this.footerBg = result
-      });
-      this.fetchMedia('background-texture').then(function(result){
-        this.pageBg = result;
       });
 		},
     fetchMedia(slug){

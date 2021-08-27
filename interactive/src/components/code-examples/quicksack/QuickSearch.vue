@@ -1,25 +1,24 @@
 <template>
     <div class="search-wrapper">
         <label for="episode-search">Search</label>
-        <input id="episode-search" class="form-control" type="text" v-model="searchQuery" placeholder="Look up an episode..." />
+        <input id="episode-search" class="form-control" type="text" v-model="searchQuery" v-on:input="runSearch" placeholder="Look up an episode..." />
     </div> 
 </template>
 <script>
 export default {
-    data () {
-        return {
-            searchQuery: null,
+    props: {
+        items: {
+            type: Array,
         }
     },
-    computed: {
-        resultQuery(){
-            if(this.searchQuery){
-                return this.items.filter((item)=>{
-                    return this.searchQuery.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
-                })
-            } else{
-                return this.items;
-            }
+    data () {
+        return {
+            searchQuery: '',
+        }
+    },
+    methods: {
+        runSearch: function() {
+            this.$emit("search",this.searchQuery);
         }
     },
 }

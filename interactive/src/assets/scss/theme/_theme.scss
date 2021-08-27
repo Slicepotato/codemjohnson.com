@@ -48,6 +48,17 @@ h3 {
     font-weight: 400;
     margin-bottom: 1rem;
 
+    a {
+        color: $chocolate-drk;
+        border-bottom: 1px solid $grey-7;
+        text-decoration: none;
+        transition: .15s;
+
+        &:hover, &:focus {
+            border-bottom: 1px solid $chocolate-drk;
+        }
+    }
+
     &--bigger {
         font-size: 1.5rem;
         line-height: 2rem;

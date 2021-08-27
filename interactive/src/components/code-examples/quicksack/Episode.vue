@@ -1,6 +1,7 @@
 <template>
     <div class="card-wrapper">
-        <div v-for="(episode, index) in resultQuery" :key="index" class="card">
+        <template v-if="items.length">
+        <div v-for="(episode, index) in items" :key="index" class="card">
             <h3 class="ep-number">
                 <button @click="copyToClipboard($route.path)" class="copy-link">
                     <fa :icon="['fas', 'link']" />
@@ -36,74 +37,41 @@
                 :objectid="episode.guid"
             />
         </div>
+        </template>
+        <template v-else>
+            <p class="empty">No results found...</p>
+        </template>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
 import moment from 'moment';
 import AudioPlayer from '@/components/code-examples/quicksack/AudioPlayer.vue';
 
-const feedParser = "https://api.rss2json.com/v1/api.json";
-
 export default {
-    props: {    
+    props: {
+        items: {
+            type: Array,
+        }
     },
     components: {
         AudioPlayer,
     },
     data() {
         return {
-            searchQuery: this.isEpisode(),
-            items: [],
-            recents: {
-                title: "Recents",
-                items: [],
-                feedUrl: "http://feeds.frogpants.com/filmsack_feed.xml"
-            },
-            archive: {
-                title: "Archive",
-                items: [],
-                feedUrl: "http://feeds.frogpants.com/filmsack_feed_old.xml"
-            },
+ 
         }
     },
+    created: function() {
+
+    },
     mounted: function() {
-        axios.all([
-            this.recentFeed(),
-            this.archiveFeed()
-        ])
-        .then(axios.spread((recent, archive) => {
-            this.recents.items = recent.data.items;
-            this.archive.items = archive.data.items;
-            this.items = recent.data.items.concat(archive.data.items);
-        }))
+
     },
     computed: {
-        resultQuery(){
-            if(this.searchQuery){
-                let found = this.items.filter((item)=>{
-                    return this.searchQuery.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v))
-                });
-                console.log(this.items)
-                return found;
-            } else{
-                console.log(this.items)
-                return this.items;
-            }
-            /*
-            = this.items.filter((item)=>{
-                return this.formatLink(item.title) == this.searchQuery;
-            })
-            console.log(found)
-            
-            */
-        },
+
     },
     methods: {
-        isEpisode() {
-           
-        },
         formatDate(date) {
             return moment(date).format('MMMM Do YYYY');
         },
@@ -149,30 +117,16 @@ export default {
             await navigator.clipboard.writeText(link);
             alert(link + ' copied!');
         },
-        recentFeed() {
-            return axios.get(feedParser, {
-                params: {
-                    rss_url: this.recents.feedUrl,
-                    api_key: 'pwgv1pkesdnf8nxq84azuasbprpspqbccbiqqhd4',
-                    count: 1000,
-                }
-            })
-        },
-        archiveFeed() {
-            return axios.get(feedParser, {
-                params: {
-                    rss_url: this.archive.feedUrl,
-                    api_key: 'pwgv1pkesdnf8nxq84azuasbprpspqbccbiqqhd4',
-                    count: 1000,
-                }
-            })
-        },
     }
 }
 </script>
 <style lang="scss" scoped>
     @import '@/assets/scss/utility/_variables.scss';
     @import '@/assets/scss/utility/_mixins.scss';
+
+    .empty {
+        text-align: center;
+    }
 
     .ep-number {
         justify-content: flex-end;
@@ -189,6 +143,7 @@ export default {
 
     .card {
         margin-bottom: 2em;
+        padding: 0;
         border: 4px solid $grey-8;
         border-radius: 1rem;
         position: relative;
@@ -209,7 +164,7 @@ export default {
                 font-family: $roboto-slab;
                 font-style: italic;
                 -webkit-text-stroke: 1px $blk;
-                color: white;
+                color: $wht;
                 text-shadow:
                     3px 3px 0 $blk,
                     -1px -1px 0 $blk,  

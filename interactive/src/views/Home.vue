@@ -10,6 +10,8 @@
       <p class="content">
         <router-link to="/quicksack">Quicksack</router-link>
         <router-link to="/light-dots">Light Dots</router-link>
+        <router-link to="/ice-cream-sammitch">Perfect Purples</router-link>
+        <router-link to="/color-pop">Color Pop</router-link>
       </p>
     </section>
     <Elsewise />

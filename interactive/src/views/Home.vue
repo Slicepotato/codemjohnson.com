@@ -12,6 +12,7 @@
         <router-link to="/light-dots">Light Dots</router-link>
         <router-link to="/ice-cream-sammitch">Perfect Purples</router-link>
         <router-link to="/color-pop">Color Pop</router-link>
+        <router-link to="/color-bars">Animated Color Bars</router-link>
       </p>
     </section>
     <Elsewise />

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-// import Episode from "@/components/code-examples/quicksack/Episode.vue";
 import QuickSack from "@/views/QuickSack.vue";
 import CodeExamples from "@/views/CodeExamples.vue";
 import NotFound from '@/views/NotFound.vue';
@@ -30,7 +29,11 @@ const routes = [
       {
         path: "/color-pop",
         name: "ColorPop",
-      }
+      },
+      {
+        path: "/color-bars",
+        name: "ColorBars"
+      },
     ]
   },
   {

@@ -16,7 +16,8 @@ export default {
     data() {
         return {
             slug: this.$route.path.replace(/\s+/g, '-').replace(/\//g, '').toLowerCase(),
-            maxW: null
+            maxW: null,
+            barAnimator: ''
         }
     },
     mounted: function() {
@@ -27,6 +28,7 @@ export default {
     },
     destroyed() {
         window.removeEventListener("resize", this.barWidth);
+        clearInterval(this.barAnimator); // Had to clear this... The animation kept bleeding on page load :3
     },
     methods: {
         init: function(){
@@ -43,7 +45,7 @@ export default {
         },
         barAnimation() {
             const self = this;
-            setInterval(function(){ 
+            this.barAnimator = setInterval(function(){ 
                 document.getElementsByClassName('inner').forEach(bar => {
                     let w = self.getRando(5,self.maxW);
                     let scale = Math.floor((w / self.maxW) * 100);

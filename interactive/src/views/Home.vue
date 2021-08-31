@@ -7,12 +7,14 @@
       <h2 class="stat-title stat-title--sm stat-title--divider">
         Examples
       </h2>
-      <p class="content">
-        <router-link to="/quicksack">Quicksack</router-link>
-        <router-link to="/light-dots">Light Dots</router-link>
-        <router-link to="/ice-cream-sammitch">Perfect Purples</router-link>
-        <router-link to="/color-pop">Color Pop</router-link>
-        <router-link to="/color-bars">Animated Color Bars</router-link>
+      <p>
+        <ul class="example-grid flex flex--justify-center flex--wrap">
+          <li v-for="(ex, index) in media" :key="index">
+            <router-link :to="ex.acf.slug">
+              <img :src="ex.featured_image_src" />
+            </router-link>
+          </li>
+        </ul>
       </p>
     </section>
     <Elsewise />
@@ -30,6 +32,7 @@ export default {
     return {
       slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
       page: [],
+      media: []
     }
   },
   components: {
@@ -39,6 +42,7 @@ export default {
   },
   created: function() {
     this.getContentBlock(this.slug);
+    this.getCodeMedia();
   },
   methods: {
     getContentBlock(slug) {
@@ -51,7 +55,18 @@ export default {
       }, error => { 
         alert(error) 
       });
-    }
+    },
+    getCodeMedia() {
+      // Fetch | Page Media
+      this.$http.get('wp/v2/code_example').then(response => {
+        for(let item in response.data){
+          this.media.push(response.data[item]);
+        }
+        // console.log(response);
+      }, error => { 
+        alert(error) 
+      });
+    },
   },
   computed: {
     currentRouteName() {
@@ -62,5 +77,23 @@ export default {
 </script>
 
 <style lang="scss">
+  @import '@/assets/scss/utility/_variables.scss';
+  @import '@/assets/scss/utility/_mixins.scss';
 
+  .example-grid {
+    a {
+      display: block;
+    }
+    img {
+      width: 340px;
+      margin: .75rem 1rem;
+      border-radius: .5rem;
+      opacity: .5;
+      transition: .25s all ease-in-out;
+
+      &:hover, &:focus {
+        opacity: 1;
+      }
+    }
+  }
 </style>

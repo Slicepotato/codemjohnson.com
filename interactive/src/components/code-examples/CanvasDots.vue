@@ -8,12 +8,10 @@ export default {
     data () {
         return {
             shell: {
-                w: null,
+                stage: null,
                 front: {
-                    id: 'applicaiton',
-                    balls: null,
-                    w: null,
-                    h: null,
+                    id: 'application',
+                    balls: [],
                     panel: null,
                     options: {
                         c: null,
@@ -35,9 +33,7 @@ export default {
                 },
                 back: {
                     id: 'background',
-                    balls: null,
-                    w: null,
-                    h: null,
+                    balls: [],
                     panel: null,
                     options: {
                         c: null,
@@ -69,27 +65,31 @@ export default {
     },
     mounted: function(){
         this.init();
+        this.animate();
     },
     methods: {
         init: function(){
             const frame = this.shell;
-            frame.w = this.$refs.frame;
-            frame.front.options.c = this.stage(frame.w,frame.front);
-            frame.back.options.c = this.stage(frame.w,frame.back);
+            frame.stage = this.$refs.frame;
+            if(!frame.front.options.c){
+                frame.front.options.c = this.stage(frame.stage,frame.front);
+            }
+            if(!frame.back.options.c){
+                frame.back.options.c = this.stage(frame.stage,frame.back);
+            }
 
             this.radius(frame.front.options);
             this.radius(frame.back.options);
 
-            this.ballPit(frame.front.options);
-            this.ballPit(frame.back.options);
-
-            this.animate();
+            this.makeCircles(frame.front);
+            this.makeCircles(frame.back);
         },
         resize: function() {
-            this.foreground.width = window.innerWidth;
-            this.background.width = window.innerWidth;
-            this.background.height = window.innerHeight;
-            this.foreground.height = window.innerHeight;
+            this.shell.front.panel.width = this.shell.stage.clientWidth;
+            this.shell.front.panel.height = this.shell.stage.clientHeight;
+
+            this.shell.back.panel.width = this.shell.stage.clientWidth;
+            this.shell.back.panel.height = this.shell.stage.clientHeight;
         },
         radius: function(layer){
             layer.r = Math.floor(Math.random() * (layer.maxR - layer.minR + layer.varR)) + layer.minR;
@@ -97,70 +97,57 @@ export default {
         animate: function(){
             requestAnimationFrame(this.animate);
 	
-	        this.moveBalls(this.front);
-	        this.moveBalls(this.back);
+	        this.moveBalls(this.shell.front);
+	        this.moveBalls(this.shell.back);
         },
         moveBalls: function(panel){
-            panel.c.clearRect(0,0,innerWidth,innerHeight);
-            for(let i=0; i<panel.Arr.length; i++){
-  	            panel.Arr[i].update();
+            panel.options.c.clearRect(0,0,panel.panel.width,panel.panel.height);
+            for(let i=0; i<panel.balls.length; i++){
+  	            panel.balls[i].update();
 	        }
         },
         makeCircles: function(o){
-            o.Arr.length = 0;
+            o.balls.length = 0;
 			
-            for(var i=0; i<o.i; i++)
+            for(var i=0; i<o.options.i; i++)
             {
                 let details = new Object();
-                details.r = Math.floor(Math.random() * (o.s.maxR - o.s.minR + o.s.varR)) + o.s.minR;
-                details.x = Math.random() * (innerWidth - details.r * 2) + details.r;
-                details.y = Math.random() * (innerHeight - details.r * 2) + details.r;
-                details.dx = (Math.random() - o.s.speed) * 3;
-                details.dy = (Math.random() - o.s.speed) * 3;
-                details.c = o.c;
-                details.a = o.s.alpha;
-                details.col = o.s.color;
-                
-                o.Arr.push(new this.circle(details));
+                details.r = Math.floor(Math.random() * (o.options.maxR - o.options.minR + o.options.varR)) + o.options.minR;
+                details.x = Math.random() * (o.panel.width - details.r * 2) + details.r;
+                details.y = Math.random() * (o.panel.height - details.r * 2) + details.r;
+                details.dx = (Math.random() - o.options.speed) * 3;
+                details.dy = (Math.random() - o.options.speed) * 3;
+                details.c = o.options.c;
+                details.a = o.options.alpha;
+                details.col = o.options.color;
+
+                o.balls.push(new this.Circle(details));
             }	
         },
-        ballPit: function(options){
-            let balls = new Object();
-            balls.c = options.c;
-            balls.i = options.i;
-            balls.s = options;
-            balls.Arr = new Array();
+        Circle: function(details){
+            let dot = new Object();
 
-            this.makeCircles(balls);
-        },
-        circle: function(details){
-            this.x = details.x;
-	        this.y = details.y;
-	        this.dx = details.dx;
-	        this.dy = details.dy;
-	        this.r = details.r;
-	        this.minR = details.r;
-	        this.color = details.col[Math.floor(Math.random() * details.col.length)];            
+	        // dot.minR = details.r;
+	        dot.color = details.col[Math.floor(Math.random() * details.col.length)];    
+
             details.c.globalAlpha = details.a;
 
             this.draw = function() {
                 details.c.beginPath();
-                details.c.arc(this.x,this.y,this.r,0, Math.PI * 2, false);
-                details.c.fillStyle = this.color;
+                details.c.arc(details.x,details.y,details.r,0, Math.PI * 2, false);
+                details.c.fillStyle = dot.color;
                 details.c.fill();
             }
-
             this.update = function() {
-                if(this.x + this.r > innerWidth || this.x - this.r < 0){
-                    this.dx = -this.dx;
+                if(details.x + details.r > details.c.canvas.width || details.x - details.r < 0){
+                    details.dx = -details.dx;
                 }
 
-                if(this.y + this.r > innerHeight || this.y - this.r < 0){
-                    this.dy = -this.dy;
+                if(details.y + details.r > details.c.canvas.height || details.y - details.r < 0){
+                    details.dy = -details.dy;
                 }
-
-                this.x += this.dx;		
-                this.y += this.dy;
+                details.x += details.dx;		
+                details.y += details.dy;
 
                 // Interactive
                 /*
@@ -179,20 +166,18 @@ export default {
                         this.r -= 2;		
                 }
                 */
-
                 this.draw();
             }
         },
         stage: function(w,c){
-            console.log(w.innerWidth);
             c.panel = document.createElement('canvas');
-            c.w = w.innerWidth;
-            c.h = w.innerHeight;
+            c.panel.id = c.id;
+            c.panel.width = w.clientWidth;
+            c.panel.height = w.clientHeight;
 
             w.appendChild(c.panel);
-            c.options.c = c.panel.getContext('2d');
 
-            console.log(c);
+            return c.panel.getContext('2d');    
         }
     }    
 }
@@ -202,7 +187,7 @@ export default {
     #canvas-wrapper {
         position: relative;
         border-radius: 1rem;
-        border: 2px solid #2a2a2a;
+        border: 3px solid #eee;
         height: 80vh;
     }
     canvas {

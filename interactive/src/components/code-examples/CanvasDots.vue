@@ -1,5 +1,5 @@
 <template>
-    <div id="canvas-wrapper"></div>
+    <div id="canvas-wrapper" ref="frame"></div>
 </template>
 
 <script>
@@ -7,43 +7,57 @@ export default {
     name: 'CanvasDots',
     data () {
         return {
-            wrapper: null,
-            foreground: null,
-            background: null,
-            apptx: null,
-            bgtx: null,
-            options: {
-                fore: {
-                    c: null,
-                    i: 20,
-                    minR: 6,
-                    maxR: 9,
-                    varR: 20,
-                    speed: .7,
-                    alpha: .7,
-                    color: [
-                        '#F44336',
-                        '#1E88E5',
-                        '#FDD835'
-                    ]
+            shell: {
+                w: null,
+                front: {
+                    id: 'applicaiton',
+                    balls: null,
+                    w: null,
+                    h: null,
+                    panel: null,
+                    options: {
+                        c: null,
+                        i: 20,
+                        r: null,
+                        dx: null,
+                        dy: null,
+                        minR: 6,
+                        maxR: 9,
+                        varR: 20,
+                        speed: .7,
+                        alpha: .7,
+                        color: [
+                            '#F44336',
+                            '#1E88E5',
+                            '#FDD835'
+                        ]
+                    }
                 },
                 back: {
-                    c: null,
-                    i: 180,
-                    minR: 3,
-                    maxR: 5,
-                    varR: 1,
-                    speed: 0.001,
-                    alpha: .2,
-                    color: [
-                        '#F44336',
-                        '#1E88E5',
-                        '#FDD835'
-                    ]
+                    id: 'background',
+                    balls: null,
+                    w: null,
+                    h: null,
+                    panel: null,
+                    options: {
+                        c: null,
+                        i: 180,
+                        r: null,
+                        dx: null,
+                        dy: null,
+                        minR: 3,
+                        maxR: 5,
+                        varR: 1,
+                        speed: 0.001,
+                        alpha: .2,
+                        color: [
+                            '#F44336',
+                            '#1E88E5',
+                            '#FDD835'
+                        ]                      
+                    }
                 }
-            },
-            front: null,
-            back: null 
+            }
         }
     },
     created: function(){
@@ -58,35 +72,27 @@ export default {
     },
     methods: {
         init: function(){
-            this.wrapper = document.getElementById("canvas-wrapper");
-            this.foreground = document.createElement('canvas');
-            this.background = document.createElement('canvas');
-            this.apptx = this.stage(this.wrapper,this.foreground,'application');
-            this.options.fore.c = this.apptx;
-            this.bgtx =this.stage(this.wrapper,this.background,'background');
-            this.options.back.c = this.bgtx;
+            const frame = this.shell;
+            frame.w = this.$refs.frame;
+            frame.front.options.c = this.stage(frame.w,frame.front);
+            frame.back.options.c = this.stage(frame.w,frame.back);
 
-            this.options.fore.r = this.radius(this.options.fore);
-            this.options.fore.dy = this.options.fore.dx;
-            this.options.back.r = this.radius(this.options.back);
-            this.options.back.dy = this.options.back.dx;
+            this.radius(frame.front.options);
+            this.radius(frame.back.options);
 
-            this.front = this.ballPit(this.options.fore);
-            this.back = this.ballPit(this.options.back);
+            this.ballPit(frame.front.options);
+            this.ballPit(frame.back.options);
 
-            this.makeCircles(this.front);
-            this.makeCircles(this.back);
-
-            this.animate(); 
+            this.animate();
         },
         resize: function() {
-            this.foreground.width = this.wrapper.innerWidth;
-            this.background.width = this.wrapper.innerWidth;
-            this.background.height = this.wrapper.innerHeight;
-            this.foreground.height = this.wrapper.innerHeight;
+            this.foreground.width = window.innerWidth;
+            this.background.width = window.innerWidth;
+            this.background.height = window.innerHeight;
+            this.foreground.height = window.innerHeight;
         },
         radius: function(layer){
-            return Math.floor(Math.random() * (layer.maxR - layer.minR + layer.varR)) + layer.minR;
+            layer.r = Math.floor(Math.random() * (layer.maxR - layer.minR + layer.varR)) + layer.minR;
         },
         animate: function(){
             requestAnimationFrame(this.animate);
@@ -124,18 +130,17 @@ export default {
             balls.i = options.i;
             balls.s = options;
             balls.Arr = new Array();
-        
-            return balls;
+
+            this.makeCircles(balls);
         },
         circle: function(details){
             this.x = details.x;
-            this.y = details.y;
-            this.dx = details.dx;
-            this.dy = details.dy;
-            this.r = details.r;
-            this.minR = details.r;
-            this.color = details.col[Math.floor(Math.random() * details.col.length)];
-            
+	        this.y = details.y;
+	        this.dx = details.dx;
+	        this.dy = details.dy;
+	        this.r = details.r;
+	        this.minR = details.r;
+	        this.color = details.col[Math.floor(Math.random() * details.col.length)];            
             details.c.globalAlpha = details.a;
 
             this.draw = function() {
@@ -144,21 +149,19 @@ export default {
                 details.c.fillStyle = this.color;
                 details.c.fill();
             }
-            this.update = function() {	
-                if(this.x + this.r > innerWidth || this.x - this.r < 0)
-                {
+
+            this.update = function() {
+                if(this.x + this.r > innerWidth || this.x - this.r < 0){
                     this.dx = -this.dx;
                 }
-                
 
-                if(this.y + this.r > innerHeight || this.y - this.r < 0)
-                {
+                if(this.y + this.r > innerHeight || this.y - this.r < 0){
                     this.dy = -this.dy;
                 }
 
                 this.x += this.dx;		
                 this.y += this.dy;
-                
+
                 // Interactive
                 /*
                 if(mouse.x - this.x < 50 && mouse.x - this.x > -50 && mouse.y - this.y < 50 && mouse.y - this.y > -50)
@@ -177,22 +180,21 @@ export default {
                 }
                 */
 
-               this.draw();
+                this.draw();
             }
-
         },
-        stage: function(w,c,id){
-            c.id = id;
-            c.width = window.innerWidth;
-            c.height = window.innerHeight;
-            w.appendChild(c);
+        stage: function(w,c){
+            console.log(w.innerWidth);
+            c.panel = document.createElement('canvas');
+            c.w = w.innerWidth;
+            c.h = w.innerHeight;
 
-            let context = c.getContext('2d');
-            
-            return context;
+            w.appendChild(c.panel);
+            c.options.c = c.panel.getContext('2d');
+
+            console.log(c);
         }
-    }
-    
+    }    
 }
 </script>
 

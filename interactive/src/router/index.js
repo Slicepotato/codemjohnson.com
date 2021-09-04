@@ -34,6 +34,10 @@ const routes = [
         path: "/color-bars",
         name: "ColorBars"
       },
+      {
+        path: "/canvas-dots",
+        name: "CanvasDots"
+      },
     ]
   },
   {

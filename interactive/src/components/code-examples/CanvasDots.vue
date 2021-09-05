@@ -58,7 +58,7 @@ export default {
     },
     created: function(){
         const self = this;
-        window.addEventListener('resize', function(e){
+        window.addEventListener('resize', function(){
             self.resize();
             self.init();
         });

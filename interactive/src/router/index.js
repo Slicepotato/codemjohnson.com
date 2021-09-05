@@ -38,6 +38,10 @@ const routes = [
         path: "/canvas-dots",
         name: "CanvasDots"
       },
+      {
+        path: "/lcars-ui",
+        name: "LCARS"
+      },
     ]
   },
   {

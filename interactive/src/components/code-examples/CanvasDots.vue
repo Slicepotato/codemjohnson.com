@@ -96,15 +96,15 @@ export default {
         },
         animate: function(){
             requestAnimationFrame(this.animate);
-	
-	        this.moveBalls(this.shell.front);
-	        this.moveBalls(this.shell.back);
+            
+            this.moveBalls(this.shell.front);
+            this.moveBalls(this.shell.back);
         },
         moveBalls: function(panel){
             panel.options.c.clearRect(0,0,panel.panel.width,panel.panel.height);
             for(let i=0; i<panel.balls.length; i++){
-  	            panel.balls[i].update();
-	        }
+                panel.balls[i].update();
+            }
         },
         makeCircles: function(o){
             o.balls.length = 0;
@@ -126,9 +126,9 @@ export default {
         },
         Circle: function(details){
             let dot = new Object();
-
-	        // dot.minR = details.r;
-	        dot.color = details.col[Math.floor(Math.random() * details.col.length)];    
+            
+            // dot.minR = details.r;
+            dot.color = details.col[Math.floor(Math.random() * details.col.length)];    
 
             details.c.globalAlpha = details.a;
 
@@ -192,10 +192,10 @@ export default {
     }
     canvas {
         position: absolute;
-	    top: 50%;
-	    left: 50%;
-	    transform: translate(-50%,-50%);
-	    height: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        height: 100%;
         width: 100%;
         border-radius: 1rem;
         

@@ -60,6 +60,7 @@ export default {
 
 <style lang="scss">
   @import '@/assets/scss/utility/_variables.scss';
+  
   .load-wrapper {
     .loading {
       position: absolute;
@@ -70,6 +71,8 @@ export default {
       width: 100%;
       text-align: center;
       padding: 1rem;
+      z-index: $z-index-8;
+
       h1 {
         font-weight: 300;
         color: $accent-orange;

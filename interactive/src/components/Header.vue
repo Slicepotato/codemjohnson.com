@@ -1,5 +1,6 @@
 <template>
-    <header>
+    <header v-if="showHeader($route.name)" :style="{ 'background-image': 'url(' + sectionBg + ')' }">
+        <Nav />
         <div class="content-wrap">
             <h1 class="stat-title flex flex--justify-start flex--align-items-center">
                 <router-link to="/"><img class="avatar" :src="token"></router-link>
@@ -10,24 +11,33 @@
             </h1>
         </div>
     </header>
+    <header v-else>
+        <Nav />
+    </header>
 </template>
 
 <script>
-let token;
-
+import Nav from '@/components/Nav.vue';
 export default {
     name: 'Header',
     data() {
         return {
-            token,
+            token: null,
+            sectionBg: null,
             user: []
         }
+    },
+    components: {
+        Nav,
     },
     created: function() {
         this.init();          
     },
     methods: {
         init: function() {
+            this.fetchMedia('header-background').then(function(result){
+                this.sectionBg = result;
+            });
             this.userData(1).then(function(result){
                 this.user.push(result);
             });
@@ -53,7 +63,16 @@ export default {
             }, error => { 
                 alert(error) 
             });
-        }
+        },
+        fetchMedia(slug){
+            return this.$http.get('wp/v2/media/?slug=' + slug).then((response) => {
+                for(let media in response.data){
+                    return response.data[media].source_url;    
+                } 
+            }, error => { 
+                alert(error) 
+            });
+        },
     }
 }
 </script>
@@ -80,6 +99,25 @@ export default {
                     font-weight: 500;;
                 }
             }
+        }
+
+        .home & {
+            height: 98vh;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            margin-bottom: 8vh;
+        }
+        
+        &:after {
+            content: '';
+            /*
+            position: absolute;
+            bottom: -1px;
+            height: 5vh;
+            width: 100%;
+            background-image: linear-gradient(to bottom, rgba(14, 14, 14, 0.75), rgba(255, 255, 255, 1));
+            */
         }
     }
 </style>

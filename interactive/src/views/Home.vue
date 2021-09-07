@@ -4,7 +4,7 @@
     <Experience />
     <About />
     <section class="page-content">
-      <h2 class="stat-title stat-title--sm stat-title--divider">
+      <h2 id="examples" class="stat-title stat-title--sm stat-title--divider">
         Examples
       </h2>
       <p>
@@ -44,7 +44,22 @@ export default {
     this.getContentBlock(this.slug);
     this.getCodeMedia();
   },
+  mounted: function() {
+    if( this.$router.currentRoute['hash'] ) {
+      let id = this.$router.currentRoute['hash'].replace("#", "");
+      this.scrollTo(id);
+    }
+  },
   methods: {
+    scrollTo: function(id) {
+      setTimeout(function() {
+        const el = document.getElementById(id);
+        const yOffset = -50;
+        const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+        window.scrollTo({top: y, behavior: 'smooth'});
+      }, 500);
+    },
     getContentBlock(slug) {
       // Fetch | Page Data
       this.$http.get('wp/v2/pages?slug=' + slug).then(response => {

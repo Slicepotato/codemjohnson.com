@@ -1,17 +1,19 @@
 <template>
     <section class="page-content">
         <template v-for="(item, index) in page">
-            <h2 class="stat-title stat-title--sm stat-title--divider" :key="index">
+          <div class="inner" :key="index">
+            <h2 class="stat-title stat-title--sm stat-title--divider">
                 {{ item.title.rendered }}
             </h2>
-            <div v-html="item.content.rendered" :key="index"></div>
+            <div v-html="item.content.rendered"></div>
+          </div>
         </template>
     </section>
 </template>
 
 <script>
 export default {
-    name: 'About Me',
+    name: 'AboutMe',
   data () {
     return {
       slug: this.$options.name.replace(/\s+/g, '-').toLowerCase(),

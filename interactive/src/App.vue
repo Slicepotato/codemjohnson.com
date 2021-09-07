@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}">
+  <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}" :class="$route.name.toLowerCase()">
     <PageLoad />
     <Header />
     <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
@@ -30,15 +30,15 @@ export default {
     PageLoad
   },
   created: function() {
-    this.fetchMedia('background-texture').then(function(result){
-      this.pageBg = result;
-    });
     this.init();    
   }, 
   mounted: function() {    
   },
   methods: {
     init: function(){
+      this.fetchMedia('background-texture').then(function(result){
+        this.pageBg = result;
+      });
 			this.fetchMedia('footer-bg-codemj').then(function(result){
         this.footerBg = result
       });

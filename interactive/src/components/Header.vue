@@ -1,7 +1,7 @@
 <template>
     <header v-if="isHome($route.name)" :style="{ 'background-image': 'url(' + sectionBg + ')' }">
         <Nav />
-        <div class="content-wrap headline">
+        <div class="content-wrap content-wrap--sm headline">
             <div class="headline-inner">
                 <h1 class="stat-title flex flex--justify-center flex--align-items-center">
                     <router-link to="/"><img class="avatar" :src="token"></router-link>
@@ -271,8 +271,6 @@ export default {
             }            
 
             @include at-least($sm) {
-                margin-top: .25rem;
-
                 h1 {
                     flex-direction: row;
                     text-align: left;

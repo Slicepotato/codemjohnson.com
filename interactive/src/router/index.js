@@ -42,6 +42,10 @@ const routes = [
         path: "/lcars-ui",
         name: "Lcars"
       },
+      {
+        path: "/discovery",
+        name: "Discovery"
+      },
     ]
   },
   {

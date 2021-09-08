@@ -5,7 +5,7 @@
     <About />
     <section class="page-content">
       <h2 id="examples" class="stat-title stat-title--sm stat-title--divider">
-        Examples
+        Code Examples
       </h2>
       <p>
         <ul class="example-grid flex flex--justify-center flex--wrap">

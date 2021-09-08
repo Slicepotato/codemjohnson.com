@@ -40,6 +40,10 @@ h3 {
     padding: 0 1rem;
     max-width: $lg;
     margin: 0 auto;
+
+    &--sm {
+        max-width: $sm;
+    }
 }
 
 .content {

@@ -71,7 +71,6 @@ export default {
       width: 100%;
       text-align: center;
       padding: 1rem;
-      z-index: $z-index-8;
 
       h1 {
         font-weight: 300;
@@ -107,6 +106,7 @@ export default {
       z-index: 999;
       transition: all .25s ease-in-out;
       background-color: $blk;
+      z-index: $z-index-8;
     }
   }
 </style> 

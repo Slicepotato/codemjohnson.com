@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'Elsewise',
+  name: 'Elsewise',
   data () {
     return {
       slug: this.$options.name.replace(/\s+/g, '-').toLowerCase(),

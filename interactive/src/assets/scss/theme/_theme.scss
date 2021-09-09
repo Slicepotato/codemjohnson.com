@@ -6,6 +6,23 @@ html, body {
     background-color: $off-blk;
 }
 
+body {
+    overflow: overlay;
+}
+
+html {
+    &::-webkit-scrollbar {
+        width: .5rem;
+    }
+    &::-webkit-scrollbar-track {
+        background: rgba($blk, 0);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: $off-blk;
+        border-radius: .5rem;
+    }
+}
+
 h1 {
     font-size: 3rem;
     margin-bottom: 1rem;

@@ -2,36 +2,32 @@
     <section class="page-content">
         <template v-for="(item, index) in page">
           <div class="inner" :key="index">
-            <h2 id="examples" class="stat-title stat-title--sm stat-title--divider">
+            <h2 class="stat-title stat-title--sm stat-title--divider">
                 {{ item.title.rendered }}
             </h2>
             <div v-html="item.content.rendered"></div>
           </div>
         </template>
-
-        <ul class="example-grid flex flex--justify-center flex--wrap">
-          <li v-for="(ex, index) in media" :key="index">
-            <router-link :to="ex.acf.slug">
-              <img :src="ex.featured_image_src" />
-            </router-link>
-          </li>
-        </ul>
     </section>
 </template>
 
 <script>
 export default {
-    name: 'CodeExamples',
+    name: 'Contact',
     data () {
         return {
             slug: this.$options.name.replace(/\s+/g, '-').toLowerCase(),
             page: [],
-            media: []
+            form: {
+                fullname: '',
+                email: '',
+                subject: '',
+                message: ''
+            }
         }
     },
     created: function() {
         this.getContentBlock(this.slug);
-        this.getCodeMedia();
     },
     methods: {
         getContentBlock(slug) {
@@ -44,17 +40,27 @@ export default {
                 alert(error) 
             });
         },
-        getCodeMedia() {
-            // Fetch | Page Media
-            this.$http.get('wp/v2/code_example').then(response => {
-                for(let item in response.data){
-                this.media.push(response.data[item]);
+        sendForm() {
+            this.$http.post('/wp-json/contact-form-7/v1/contact-forms', this.form {
+                headers: {
+                    'Authorization': `Bearer ${res.data.token}`,
+                    'Content-Type': 'multipart/form-data; charset="utf-8"',
+                    ...formData.getHeaders()
                 }
-                // console.log(response);
-            }, error => { 
-                alert(error) 
-            });
-        },
+            })
+            .then(response => {
+                console.log('Success --> ' + response.data)
+            })
+            .catch(error => {
+                console.log('Error --> ' + error)
+            })
+        }
     },
 }
 </script>
+
+<style lang="scss">
+    @import '@/assets/scss/utility/_variables.scss';
+    @import '@/assets/scss/utility/_mixins.scss';
+
+</style>

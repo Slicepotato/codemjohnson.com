@@ -6,7 +6,6 @@
     <CodeExamples />  
     <Design />  
     <Elsewise />
-    <Contact />
   </div>
 </template>
 
@@ -16,7 +15,6 @@ import Elsewise from '@/components/Elsewise.vue';
 import CodeExamples from '@/components/CodeExamples.vue';
 import Background from '@/components/Background.vue';
 import Design from '@/components/Design.vue';
-import Contact from '@/components/Contact.vue';
 
 export default {
   name: 'Home',
@@ -32,7 +30,6 @@ export default {
     CodeExamples,
     Background,
     Design,
-    Contact
   },
   created: function() {
     this.getContentBlock(this.slug);

@@ -19,7 +19,6 @@
                 <span v-if="isHome($route.name)" v-on:click="scrollTo('Design')">Design</span>
                 <router-link v-else :to="{ path: '/', hash: 'Design' }">Design</router-link>
             </li>
-            <li><router-link to="/">Contact</router-link></li>
             <li><router-link to="/">Resume <fa :icon="['fas', 'file-download']" class="icon" /></router-link></li>
         </ul>
     </nav>

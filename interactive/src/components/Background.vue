@@ -2,7 +2,7 @@
     <section class="page-content">
         <template v-for="(item, index) in page">
           <div class="inner" :key="index">
-            <h2 id="examples" class="stat-title stat-title--sm stat-title--divider">
+            <h2 id="experience" class="stat-title stat-title--sm stat-title--divider">
                 {{ item.title.rendered }}
             </h2>
             <div v-html="item.content.rendered"></div>

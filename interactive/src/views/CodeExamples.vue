@@ -5,10 +5,12 @@
             <div v-html="item.content.rendered"></div>
 
             <template v-if="item.acf.code">
-                <h3 class="stat-title stat-title--sm stat-title--divider">{{ item.acf.code[0].block_name }}</h3>
-                <code-highlight class="code-block" :language="item.acf.code[0].block_lang">
-                    {{ item.acf.code[0].block }}
-                </code-highlight>
+                <template v-for="(item, code) in item.acf.code">
+                    <h3 class="stat-title stat-title--sm stat-title--divider" :key="code">{{ item.block_name }}</h3>
+                    <code-highlight class="code-block" :language="item.block_lang" :key="code">
+                        {{ item.block }}
+                    </code-highlight>
+                </template>
             </template>
 
             <p class="content">{{ getAdditionalBlock('reflection') }}</p>
@@ -17,8 +19,8 @@
             <component :is="getComponent" />
             
             <ul class="tech-stack flex flex--justify-end flex--align-items-center">
-            <li v-for="(tech, t) in item.acf.technologies" :key="t" > 
-                <fa :icon="['fab',tech.tech_list]" />
+                <li v-for="(tech, t) in item.acf.technologies" :key="t" > 
+                    <fa :icon="['fab',tech.tech_list]" />
                 </li>
             </ul>
         </div>

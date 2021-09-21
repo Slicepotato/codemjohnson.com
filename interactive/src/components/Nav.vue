@@ -6,7 +6,6 @@
                 <span v-if="isHome($route.name)" v-on:click="scrollTop">Home</span>
                 <router-link v-else to="/">Home</router-link>
             </li>
-            <li><router-link to="/">About</router-link></li>
             <li>
                 <span v-if="isHome($route.name)" v-on:click="scrollTo('experience')">Experience</span>
                 <router-link v-else :to="{ path: '/', hash: 'experience' }">Experience</router-link>
@@ -16,10 +15,10 @@
                 <router-link v-else :to="{ path: '/', hash: 'examples' }">Examples</router-link>
             </li>
             <li>
-                <span v-if="isHome($route.name)" v-on:click="scrollTo('Design')">Design</span>
-                <router-link v-else :to="{ path: '/', hash: 'Design' }">Design</router-link>
+                <span v-if="isHome($route.name)" v-on:click="scrollTo('design')">Design</span>
+                <router-link v-else :to="{ path: '/', hash: 'design' }">Design</router-link>
             </li>
-            <li><router-link to="/">Resume <fa :icon="['fas', 'file-download']" class="icon" /></router-link></li>
+            <li><a target="_blank" :href="resume" download>Resume <fa :icon="['fas', 'file-download']" class="icon" /></a></li>
         </ul>
     </nav>
 </template>
@@ -28,10 +27,19 @@
 export default {
     data() {
         return {
-            open: null
+            open: null,
+            resume: null
         }
     },
+    created: function() {
+        this.init(); 
+    },
     methods: {
+        init: function() {
+            this.fetchMedia(222).then(function(result){
+                this.resume = result;
+            });
+        },
         menu: function() {
             if(!this.open) {
                 this.open = 'open';
@@ -56,6 +64,13 @@ export default {
                 top: 0,
                 behavior: "smooth"
             })
+        },
+        fetchMedia(id){
+            return this.$http.get('wp/v2/media/' + id).then((response) => {
+                return response.data.source_url; 
+            }, error => { 
+                alert(error) 
+            });
         },
     }
 }

@@ -69,12 +69,6 @@ export default {
         font-weight: 400;
         src: url('https://raw.githubusercontent.com/Slicepotato/slicepotato.github.io/master/fonts/Swiss%20911%20Ultra%20Compressed%20BT.ttf') format('truetype');
     }
-    @function randomNum($min, $max) {
-        $rand: random();
-        $randomNum: $min + floor($rand * (($max - $min) + 1));
-
-        @return $randomNum;
-    }
 
     * {
         box-sizing: border-box;	

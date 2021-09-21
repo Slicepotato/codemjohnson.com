@@ -185,6 +185,7 @@ export default {
       border: none;
       background-color: transparent;
       z-index: 9;
+      padding: 0 .5rem;
 
       &.slick-disabled {
         color: $grey-6;

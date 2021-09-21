@@ -1,30 +1,20 @@
 <template>
   <div class="home content-wrap">
     <div class="page-content" v-html="item.content.rendered" v-for="(item, index) in page" :key="index"></div>
-    <Experience />
+    <Background />
     <About />
-    <section class="page-content">
-      <h2 id="examples" class="stat-title stat-title--sm stat-title--divider">
-        Examples
-      </h2>
-      <p>
-        <ul class="example-grid flex flex--justify-center flex--wrap">
-          <li v-for="(ex, index) in media" :key="index">
-            <router-link :to="ex.acf.slug">
-              <img :src="ex.featured_image_src" />
-            </router-link>
-          </li>
-        </ul>
-      </p>
-    </section>
+    <CodeExamples />  
+    <Design />  
     <Elsewise />
   </div>
 </template>
 
 <script>
-import Experience from '@/components/Experience.vue';
 import About from '@/components/About.vue';
 import Elsewise from '@/components/Elsewise.vue';
+import CodeExamples from '@/components/CodeExamples.vue';
+import Background from '@/components/Background.vue';
+import Design from '@/components/Design.vue';
 
 export default {
   name: 'Home',
@@ -32,17 +22,17 @@ export default {
     return {
       slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
       page: [],
-      media: []
     }
   },
   components: {
-    Experience,
     About,
-    Elsewise
+    Elsewise,
+    CodeExamples,
+    Background,
+    Design,
   },
   created: function() {
     this.getContentBlock(this.slug);
-    this.getCodeMedia();
   },
   mounted: function() {
     if( this.$router.currentRoute['hash'] ) {
@@ -65,17 +55,6 @@ export default {
       this.$http.get('wp/v2/pages?slug=' + slug).then(response => {
         for(let item in response.data){
           this.page.push(response.data[item]);
-        }
-        // console.log(response);
-      }, error => { 
-        alert(error) 
-      });
-    },
-    getCodeMedia() {
-      // Fetch | Page Media
-      this.$http.get('wp/v2/code_example').then(response => {
-        for(let item in response.data){
-          this.media.push(response.data[item]);
         }
         // console.log(response);
       }, error => { 

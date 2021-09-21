@@ -106,7 +106,7 @@ export default {
             // background-color: rgba($off-blk,.75);
             padding: .5rem;
             // margin: 0 1rem;
-            border: 3px solid $accent-orange;
+            border: 3px solid $accent-bronze;
             background: repeating-linear-gradient(45deg,
                 $off-blk,
                 $off-blk 1rem,
@@ -116,7 +116,7 @@ export default {
 
             .headline-inner {
                 position: relative;
-                border: 2px solid $accent-orange;
+                border: 2px solid $accent-bronze;
                 padding: 1.5rem;
 
                 &:before, &:after {
@@ -126,8 +126,8 @@ export default {
                     position: absolute;
                     width: 1rem;
                     height: 1rem;
-                    color: $accent-orange;
-                    border: 2px solid $accent-orange;
+                    color: $accent-bronze;
+                    border: 2px solid $accent-bronze;
                     bottom: -2px;
                     text-align: center;
                 }
@@ -146,8 +146,8 @@ export default {
                 position: absolute;
                 width: 1rem;
                 height: 1rem;
-                color: $accent-orange;
-                border: 2px solid $accent-orange;
+                color: $accent-bronze;
+                border: 2px solid $accent-bronze;
                 top: .5rem;
                 text-align: center;
             }

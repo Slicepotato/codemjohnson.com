@@ -149,9 +149,6 @@ export default {
             if(from.params.episodeId) {
                 this.episode = null;
             }
-
-            console.log(from);
-            console.log(this.episode);
         }
     }
 }

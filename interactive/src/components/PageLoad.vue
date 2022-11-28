@@ -12,7 +12,7 @@
 export default {
     data () {
         return {
-            loading: false,
+            // loading: false,
             percent: null,
         }
     },
@@ -34,23 +34,23 @@ export default {
             const self = this; 
             setInterval(function(){
                 if(i === 21)  {
-                clearInterval(this);
-                setTimeout(function(){ 
+                  clearInterval(this);
+                  setTimeout(function(){ 
                     setInterval(function(){
-                    if(k === 101)  {
+                      if(k === 101)  {
                         clearInterval(this);
                         setTimeout(function(){ 
-                        self.loading = false;
+                        // self.loading = false;
                         }, 500);
-                    } else {
+                      } else {
                         self.percent = k + '%';
                         k++;
-                    }
+                      }
                     }, 10);
-                }, 500);
+                  }, 500);
                 } else {
-                self.percent = i + '%';
-                i++;
+                  self.percent = i + '%';
+                  i++;
                 }
             }, 25);
         }

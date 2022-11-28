@@ -9,7 +9,8 @@
         <section class="inner">
           <div class="front">
             <h3 class="job-timeline">
-              <fa :icon="['fas', 'calendar']" class="icon" />{{ job.acf.start_date }} - {{ job.acf.end_date }}</h3>
+              <fa :icon="['fas', 'calendar']" class="icon" />{{ job.acf.start_date }} - {{ job.acf.end_date }}
+            </h3>
             <h4 class="employer">
               <template v-if="job.acf.company_url">
                 <a :href="job.acf.company_url" target="_blank"><span>{{ job.title.rendered}}</span></a>
@@ -21,22 +22,22 @@
             <h5 class="job-title">{{ job.acf.job_title }}</h5>
             <img class="job-img" v-if="job.acf.featured_image" :src="job.acf.featured_image.url" />
             <article class="job-excerpt" v-html="job.excerpt.rendered"></article>
-              <template v-if="job.tagList.length">
-                <div class="skills-list">
-                  <h5>Skills</h5>
-                  <ul class="flex flex--justify-start flex--align-center flex--wrap">
-                    <li v-for="(tag,index) in job.tagList" :key="index">
-                      <span>{{ tag.name }}</span>
-                    </li>
-                  </ul>
-                </div>
-              </template>
-            </div>
-            <div class="back">
-              <span class="card-bg" :style="{ 'background-image':'url(' + cardBack +')'}"></span>
-            </div>
-          </section>
-        </div>
+            <template v-if="job.tagList.length">
+              <div class="skills-list">
+                <h5>Skills</h5>
+                <ul class="flex flex--justify-start flex--align-center flex--wrap">
+                  <li v-for="(tag,index) in job.tagList" :key="index">
+                    <span>{{ tag.name }}</span>
+                  </li>
+                </ul>
+              </div>
+            </template>
+          </div>
+          <div class="back">
+            <span class="card-bg" :style="{ 'background-image':'url(' + cardBack +')'}"></span>
+          </div>
+        </section>
+      </div>
     </slick>
     <div id="dots-wrapper"></div>
   </div>

@@ -1,10 +1,9 @@
 <template>
-  <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}" :class="$route.name.toLowerCase()">
-    <PageLoad />
+  <div id="app" :style="{ 'background-image':'url(' + pageBg +')'}" :class="$route.name.toLowerCase()">  
     <Header />
-    <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
-      <router-view />
-    </div>
+      <div class="page-wrap" :style="{ 'background-image':'url(' + footerBg +')'}">
+        <router-view ref="slug" />
+      </div>
     <Footer />
   </div>
 </template>
@@ -12,7 +11,6 @@
 <script>
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
-import PageLoad from '@/components/PageLoad.vue';
 
 let pageBg;
 let footerBg;
@@ -27,10 +25,9 @@ export default {
   components: {
     Footer,
     Header,
-    PageLoad
   },
   created: function() {
-    this.init();    
+    this.init(); 
   }, 
   mounted: function() {    
   },
@@ -40,7 +37,8 @@ export default {
         this.pageBg = result;
       });
 			this.fetchMedia('footer-bg-codemj').then(function(result){
-        this.footerBg = result
+        this.footerBg = result;
+        console.log(this.$refs.slug);
       });
 		},
     fetchMedia(slug){

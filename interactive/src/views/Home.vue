@@ -1,6 +1,7 @@
 <template>
   <div class="home content-wrap">
-    <div class="page-content" v-html="item.content.rendered" v-for="(item, index) in page" :key="index"></div>
+    <PageLoad v-if="loadingStatus" />
+    <section class="page-content" v-html="item.content.rendered" v-for="(item, index) in pageContent" :key="index"></section>
     <Background />
     <About />
     <CodeExamples />  
@@ -15,13 +16,13 @@ import Elsewise from '@/components/Elsewise.vue';
 import CodeExamples from '@/components/CodeExamples.vue';
 import Background from '@/components/Background.vue';
 import Design from '@/components/Design.vue';
+import PageLoad from '@/components/PageLoad.vue';
 
 export default {
   name: 'Home',
   data () {
     return {
       slug: this.$route.name.replace(/\s+/g, '-').toLowerCase(),
-      page: [],
     }
   },
   components: {
@@ -30,9 +31,11 @@ export default {
     CodeExamples,
     Background,
     Design,
+    PageLoad
   },
   created: function() {
-    this.getContentBlock(this.slug);
+    // this.loading = true; 
+    this.$store.dispatch('getContentBlock');
   },
   mounted: function() {
     if( this.$router.currentRoute['hash'] ) {
@@ -50,22 +53,19 @@ export default {
         window.scrollTo({top: y, behavior: 'smooth'});
       }, 500);
     },
-    getContentBlock(slug) {
-      // Fetch | Page Data
-      this.$http.get('wp/v2/pages?slug=' + slug).then(response => {
-        for(let item in response.data){
-          this.page.push(response.data[item]);
-        }
-        // console.log(response);
-      }, error => { 
-        alert(error) 
-      });
-    },
+    
   },
   computed: {
     currentRouteName() {
         return this.$route.name;
     },
+    pageContent() {         
+      const page = this.$store.state.pageContent.filter(page => page.slug == this.slug);
+      return page;
+    },
+    loadingStatus() {
+      return this.$store.getters.loadingStatus;
+    }
   }
 }
 </script>

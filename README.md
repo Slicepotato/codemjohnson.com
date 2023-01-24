@@ -11,7 +11,5 @@ Personal Interactive Resume set here to highlight ongoing development work in th
 
 Decided on utilizing GitHub's embedded actions interface for a seamless CI/CD process to rapidly deploy updates to production by the way of confirming an appropriate pull request to the target deployment branch
 
-----
-
 ## Live @
 > https://codemjohnson.com

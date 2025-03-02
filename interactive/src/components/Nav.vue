@@ -36,7 +36,7 @@ export default {
     },
     methods: {
         init: function() {
-            this.fetchMedia(242).then(function(result){
+            this.fetchMedia(255).then(function(result){
                 this.resume = result;
             });
         },
